@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.configs.subsystems;
 
+import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -46,5 +47,27 @@ public class Intake {
         gate.setPosition(RobotConstants.Intake.CLOSE_POS);
     }
 
+
+    /* ======================= COMMANDS =======================  */
+
+
+    public Command intakeCommand()
+    {
+        return Command.build()
+                .setStart(this::enable)
+                .setDone(() -> false)
+                .setEnd(endCondition -> disable())
+                .requiring(this)
+                .setPriority(1);
+    }
+
+    public Command outtakeCommand()
+    {
+        return Command.build()
+                .setStart(this::reverse)
+                .setDone(() -> false)
+                .setEnd(endCondition -> disable())
+                .requiring(this);
+    }
 
 }
