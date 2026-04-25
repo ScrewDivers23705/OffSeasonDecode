@@ -11,7 +11,7 @@ public class Intake {
 
     private DcMotor intake;
     private Servo gate;
-    public int state = 0;
+    private int state = 0;
     // Constructor for the hardware
     public Intake(HardwareMap hwMap)
     {
@@ -46,7 +46,7 @@ public class Intake {
     {
         gate.setPosition(RobotConstants.Intake.CLOSE_POS);
     }
-
+    public int getState() { return this.state;}
 
     /* ======================= COMMANDS =======================  */
 

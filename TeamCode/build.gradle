@@ -22,7 +22,9 @@ android {
         jniLibs.useLegacyPackaging true
     }
 }
-
+repositories {
+    maven { url 'https://repo.dairy.foundation/releases' }
+}
 dependencies {
     implementation project(':FtcRobotController')
-}
+    implementation 'dev.frozenmilk.dairy:Core:1.0.0'}

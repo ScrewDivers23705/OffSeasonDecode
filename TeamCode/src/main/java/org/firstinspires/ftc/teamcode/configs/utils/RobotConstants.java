@@ -11,6 +11,18 @@ public class RobotConstants {
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double kP = 3; // launcher kp
         public static final double FF = 13; // launcher feedforward
+
+        public enum LaunchState
+        {
+            IDLE,
+            SPIN_UP,
+            LAUNCH,
+            LAUNCHING,
+        }
+        public LookUpTable addPoints(LookUpTable lookUpTable)
+        {
+            //TODO transfer all points from old file
+        }
     }
 
     public static class Intake{
