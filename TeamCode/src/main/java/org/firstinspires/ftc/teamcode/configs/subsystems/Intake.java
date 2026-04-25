@@ -22,29 +22,29 @@ public class Intake {
     }
     public void enable()
     {
-        intake.setPower(RobotConstants.Intake.FORWARD_POWER);
-        gate.setPosition(RobotConstants.Intake.CLOSE_POS);
+        intake.setPower(RobotConstants.IntakeConstants.FORWARD_POWER);
+        gate.setPosition(RobotConstants.IntakeConstants.CLOSE_POS);
         state = 1;
     }
     public void disable()
     {
         intake.setPower(0);
-        gate.setPosition(RobotConstants.Intake.OPEN_POS);
+        gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
         state = 0;
     }
     public void reverse()
     {
-        intake.setPower(RobotConstants.Intake.REVERSE_POWER);
-        gate.setPosition(RobotConstants.Intake.OPEN_POS);
+        intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER);
+        gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
         state = -1;
     }
     public void openGate()
     {
-        gate.setPosition(RobotConstants.Intake.OPEN_POS);
+        gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
     }
     public void closeGate()
     {
-        gate.setPosition(RobotConstants.Intake.CLOSE_POS);
+        gate.setPosition(RobotConstants.IntakeConstants.CLOSE_POS);
     }
     public int getState() { return this.state;}
 
@@ -67,7 +67,8 @@ public class Intake {
                 .setStart(this::reverse)
                 .setDone(() -> false)
                 .setEnd(endCondition -> disable())
-                .requiring(this);
+                .requiring(this)
+                .setPriority(0);
     }
 
 }

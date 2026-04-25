@@ -6,34 +6,64 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
+import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 
 @TeleOp (name="Drive Test", group = "Tests")
 public class TeleDriveTest extends OpMode {
     private Drivetrain dt;
+    private Launcher launcher;
     private Intake intake;
+    private Vision vision;
+
+    int tag = 24;
 
     public void init()
     {
-        dt = new Drivetrain(hardwareMap); // construct drivetrain class
-        intake = new Intake(hardwareMap); // construct intake class
+        dt = new Drivetrain(hardwareMap); // construct drivetrain object
+        intake = new Intake(hardwareMap); // construct intake object
+        launcher = new Launcher(hardwareMap); // construct the launcher object
+        vision = new Vision(hardwareMap);
 
         Scheduler.reset(); // Clean schedule before running
 
         Scheduler.schedule(dt.driveCommand(  // Creates the movement schedule
                 () -> -gamepad1.left_stick_y,
                 () -> -gamepad1.left_stick_x,
-                () -> -gamepad1.right_stick_x,
+                () -> gamepad1.right_trigger > 0.5 ? vision.getAutoRotate() : -gamepad1.right_stick_x, // checks if right triggers is held and if so attempts to auto rotate
                 () -> false
         ));
-
     }
 
 
     public void loop()
     {
-        if (gamepad2.left_bumper && !Scheduler.isScheduled(intake.intakeCommand()))
-            Scheduler.schedule(intake.intakeCommand());
-        Scheduler.execute();
+        { // Driver command (lo nahag 2)
+
+        }
+
+        { // Operator commands (nahag 2)
+            if (gamepad2.left_trigger > 0.5 && !Scheduler.isScheduled(intake.intakeCommand()))
+                Scheduler.schedule(intake.intakeCommand());
+            if (gamepad2.left_bumper && !Scheduler.isScheduled(intake.outtakeCommand()))
+                Scheduler.schedule(intake.outtakeCommand());
+
+            if (gamepad2.right_trigger > 0.5 && !launcher.isBusy())
+                Scheduler.schedule(launcher.buildRapidFireCommand(vision.getDistance()));
+            if (gamepad2.right_bumper && !launcher.isBusy())
+                Scheduler.schedule(launcher.buildShootCommand(vision.getDistance()));
+        }
+
+        { // all the periodic commands
+            launcher.periodic();
+            vision.periodic();
+
+            Scheduler.execute(); //run everything scheduled
+
+        }
+        { // telemtry
+
+        }
     }
 
 }
