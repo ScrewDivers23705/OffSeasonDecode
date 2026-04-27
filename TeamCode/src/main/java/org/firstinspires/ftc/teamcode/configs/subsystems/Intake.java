@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
+import java.util.function.BooleanSupplier;
+
 public class Intake {
 
     private DcMotor intake;
@@ -29,7 +31,6 @@ public class Intake {
     public void disable()
     {
         intake.setPower(0);
-        gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
         state = 0;
     }
     public void reverse()
@@ -51,21 +52,21 @@ public class Intake {
     /* ======================= COMMANDS =======================  */
 
 
-    public Command intakeCommand()
+    public Command intakeCommand(BooleanSupplier isHeld)
     {
         return Command.build()
                 .setStart(this::enable)
-                .setDone(() -> false)
+                .setDone(() -> !isHeld.getAsBoolean())
                 .setEnd(endCondition -> disable())
                 .requiring(this)
                 .setPriority(1);
     }
 
-    public Command outtakeCommand()
+    public Command outtakeCommand(BooleanSupplier isHeld)
     {
         return Command.build()
                 .setStart(this::reverse)
-                .setDone(() -> false)
+                .setDone(() -> !isHeld.getAsBoolean())
                 .setEnd(endCondition -> disable())
                 .requiring(this)
                 .setPriority(0);

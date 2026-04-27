@@ -27,6 +27,7 @@ public class Launcher{
     private CRServo leftFeeder; // left crservo feeder
     private CRServo rightFeeder; // right crservo feeder
     private Servo hood;
+    private Intake intake;
     private boolean active = false; // is shooter active
     private double targetRPM = 0; // target velocity for flywheel
     private boolean isBusy = false;
@@ -37,7 +38,7 @@ public class Launcher{
 
     private com.qualcomm.robotcore.hardware.VoltageSensor batteryVoltageSensor;
 
-    public Launcher(HardwareMap hwMap)
+    public Launcher(HardwareMap hwMap, Intake mainIntake)
     {
         lookUpTable = new LookUpTable(2);
 
@@ -45,6 +46,7 @@ public class Launcher{
         leftFeeder = hwMap.get(CRServo.class, "left_feeder");
         rightFeeder = hwMap.get(CRServo.class, "right_feeder");
         hood = hwMap.get(Servo.class, "hood");
+        intake = mainIntake;
 
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
@@ -106,6 +108,9 @@ public class Launcher{
                 }),
                 instant(() -> {
                     hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
+                }),
+                instant(() -> {
+                   intake.openGate();
                 })
             ),
             waitUntil(this::isReady), // wait until flywheel is in correct speed

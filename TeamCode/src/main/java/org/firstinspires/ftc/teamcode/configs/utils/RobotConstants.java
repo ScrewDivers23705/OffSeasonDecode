@@ -31,7 +31,7 @@ public class RobotConstants {
 
     public static class IntakeConstants {
         public static final double CLOSE_POS = 0.49; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0.0; // gate pos to let artifacts go through
+        public static final double OPEN_POS = 0.1; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }
