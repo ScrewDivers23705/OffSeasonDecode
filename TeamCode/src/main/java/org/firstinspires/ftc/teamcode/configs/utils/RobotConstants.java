@@ -11,8 +11,8 @@ public class RobotConstants {
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double RPM_TOLERANCE = 50.0;
         public static final double kP = 0.1; // launcher kP //TODO tune kp
-        public static final double kS = 0.13; // launcher kS //TODO tune, check when motor starts moving
-        public static final double kV = 13; // launcher kA // TODO tune, check when vel=targetvel without any kp
+        public static final double kS = 0.043; // launcher kS //TODO tune, check when motor starts moving
+        public static final double kV = 0.0056; // launcher kA // TODO tune, check when vel=targetvel without any kp
         public static LookUpTable addPoints()
         {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable

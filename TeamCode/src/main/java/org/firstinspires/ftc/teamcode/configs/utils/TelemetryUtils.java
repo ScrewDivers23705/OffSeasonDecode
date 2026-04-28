@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.configs.utils;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer;
 
-// FTControl Panels Imports
 import com.bylazar.field.FieldManager;
 import com.bylazar.field.PanelsField;
-import com.bylazar.field.Style;
-import com.bylazar.panels.Panels;
+
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.bylazar.camerastream.PanelsCameraStream;
