@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants.KickerConstants;
+
 public class Kicker {
     private DcMotorEx kicker;
     private ElapsedTime timer;
@@ -28,7 +30,7 @@ public class Kicker {
     {
         return sequential(
             instant(this::enable),
-            waitMs(500),
+            waitMs(KickerConstants.EXPAND_TIME),
             instant(this::disable)
         );
     }
@@ -36,7 +38,7 @@ public class Kicker {
     {
         return sequential(
                 instant(this::reverse),
-                waitMs(500),
+                waitMs(KickerConstants.COMPACT_TIME),
                 instant(this::disable)
         );
     }

@@ -96,6 +96,7 @@ public class Vision {
         }
         return 0;
     }
+    public VisionPortal getPortal() {return visionPortal;}
     public void stop() {
         if (visionPortal != null) {
             visionPortal.close();

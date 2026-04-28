@@ -13,8 +13,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.RobocolConfig;
 
 import org.firstinspires.ftc.teamcode.configs.utils.LookUpTable;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants.ShooterConstants;
 
 import java.util.ArrayList;
@@ -40,8 +42,6 @@ public class Launcher{
 
     public Launcher(HardwareMap hwMap, Intake mainIntake)
     {
-        lookUpTable = new LookUpTable(2);
-
         launcher = hwMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hwMap.get(CRServo.class, "left_feeder");
         rightFeeder = hwMap.get(CRServo.class, "right_feeder");
@@ -55,6 +55,7 @@ public class Launcher{
         batteryVoltageSensor = hwMap.voltageSensor.iterator().next();
         currentVoltage = batteryVoltageSensor.getVoltage();
 
+        lookUpTable = ShooterConstants.addPoints();
     }
 
     /* ======================= GETTERS/SETTERS =======================  */

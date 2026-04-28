@@ -11,11 +11,12 @@ public class RobotConstants {
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double RPM_TOLERANCE = 50.0;
         public static final double kP = 0.1; // launcher kP //TODO tune kp
-        public static final double kS = 13; // launcher kS //TODO tune, check when motor starts moving
+        public static final double kS = 0.13; // launcher kS //TODO tune, check when motor starts moving
         public static final double kV = 13; // launcher kA // TODO tune, check when vel=targetvel without any kp
-
-        public LookUpTable addPoints(LookUpTable lookUpTable)
+        public static LookUpTable addPoints()
         {
+            org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
+
             lookUpTable.add(72, 0.26, 1327); //dist (CM),angle , RPM
             lookUpTable.add(86, 0.265, 1350);
             lookUpTable.add(100,0.27, 1385);
@@ -38,8 +39,11 @@ public class RobotConstants {
 
     public static class VisionConstants {
         public static final double kP = 0.025;
-        public static final double kD = 0.0;
         public static final double GOAL_OFFSET = -12;
         public static final double OFFSET_TOLERANCE = 2;
+    }
+    public static class KickerConstants{
+        public static final int EXPAND_TIME = 1000; // Ms time for kicker to run
+        public static final int COMPACT_TIME = 1000; // Ms time for kicker to compact
     }
 }
