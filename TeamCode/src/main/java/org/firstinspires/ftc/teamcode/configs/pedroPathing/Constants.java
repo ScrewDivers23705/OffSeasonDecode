@@ -42,8 +42,8 @@ public class Constants {
             .strafePodX(6.11)
             .forwardEncoderDirection(Encoder.FORWARD) // TODO check up direction by running localizationtest opmode in the tuning
             .strafeEncoderDirection(Encoder.FORWARD)
-            .forwardTicksToInches(1) //TODO check up the multiplier by running the localization opmode
-            .strafeTicksToInches(1);
+            .forwardTicksToInches(-0.008613089) //TODO check up the multiplier by running the localization opmode
+            .strafeTicksToInches(-0.0290756031);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 

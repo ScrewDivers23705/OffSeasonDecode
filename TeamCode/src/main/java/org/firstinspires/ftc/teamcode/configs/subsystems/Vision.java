@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -25,11 +26,13 @@ public class Vision {
     private VisionPortal visionPortal;
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
 
-    public static int id = 24;
+    private double GOAL_OFFSET = 0;
+
+    public static int id = 0;
 
     /* ========== Auto rotate variables ========= */
 
-    public Vision(HardwareMap hwMap)
+    public Vision(HardwareMap hwMap, Alliance alliance)
     {
         aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawTagID(true)
@@ -44,6 +47,15 @@ public class Vision {
         builder.addProcessor(aprilTagProcessor);
 
         visionPortal = builder.build();
+
+        //Automatically set constants as blue side
+        GOAL_OFFSET = VisionConstants.BLUE_GOAL_OFFSET;
+        id = VisionConstants.BLUE_ID;
+
+        if (alliance == Alliance.RED) { // if red side change to red
+            GOAL_OFFSET = VisionConstants.RED_GOAL_OFFSET;
+            id = VisionConstants.RED_ID;
+        }
     }
 
     public void periodic() { // periodic, call every loop
@@ -60,7 +72,7 @@ public class Vision {
             return 0;
         }
 
-        double error = VisionConstants.GOAL_OFFSET - getOffset();
+        double error = GOAL_OFFSET - getOffset();
 
         if (Math.abs(error) < VisionConstants.OFFSET_TOLERANCE)
             return 0;

@@ -11,6 +11,7 @@ import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.robocol.RobocolConfig;
@@ -68,13 +69,15 @@ public class Launcher{
     public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
-        leftFeeder.setPower(ShooterConstants.FULL_SPEED);
+        leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(ShooterConstants.FULL_SPEED);
+        intake.feed();
     }
     public void stopFeeders()
     {
         leftFeeder.setPower(ShooterConstants.STOP_SPEED);
         rightFeeder.setPower(ShooterConstants.STOP_SPEED);
+        intake.disable();
     }
     public boolean isBusy() {return isBusy;}
     /* ======================= COMMANDS =======================  */
@@ -124,6 +127,7 @@ public class Launcher{
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass
                 active = false; // turns off the shooters
                 isBusy = false; // set as not busy and free to use
+                targetRPM = 0;
             })
         );
     }

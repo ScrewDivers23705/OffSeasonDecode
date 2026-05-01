@@ -8,25 +8,43 @@ import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.configs.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class Drivetrain{
     public final Follower follower;
-    public Drivetrain(HardwareMap hwMap)
+    private Alliance alliance;
+    public Drivetrain(HardwareMap hwMap, Alliance alliance)
     {
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
+
+        this.alliance = alliance;
     }
 
     public void drive (double forward, double strafe, double turn, boolean fieldCentric)
     {
-        follower.setTeleOpDrive(forward,strafe,turn,!fieldCentric);
+        if (fieldCentric)
+        {
+            double offset = getAngularOffset(); // get offset
+
+            double fieldForward = forward * Math.cos(offset) - strafe * Math.sin(offset);
+            double fieldStrafe = forward * Math.sin(offset) + strafe * Math.cos(offset);
+
+            follower.setTeleOpDrive(fieldForward, fieldStrafe, turn, false);
+        }
+        else
+            follower.setTeleOpDrive(forward,strafe,turn,true);
     }
     public void update()
     {
         follower.update();
+    }
+
+    private double getAngularOffset(){
+        return (alliance == Alliance.BLUE) ? 0.0 : Math.PI;
     }
 
     /* ======================= COMMANDS =======================  */
@@ -42,7 +60,7 @@ public class Drivetrain{
                 .setEnd(endCondition -> drive(0,0,0,false))
                 .requiring(this)
                 .setPriority(0)
-                .setInterruptedBehavior(InterruptedBehavior.END)
+                .setInterruptedBehavior(InterruptedBehavior.SUSPEND)
                 .setConflictBehavior(ConflictBehavior.OVERRIDE)
                 .setBlockedBehavior(BlockedBehavior.CANCEL);
     }

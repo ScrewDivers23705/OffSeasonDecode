@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Kicker;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
+import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
 
 @TeleOp (name="Main Test", group = "Tests")
@@ -22,6 +23,7 @@ public class MainTest extends OpMode {
     private Vision vision;
     private Kicker kicker;
     private TelemetryUtils comms;
+    private Alliance alliance;
     /* ================================ COMMANDS ================================ */
     private Command intakeCmd;
     private Command outtakeCmd;
@@ -30,10 +32,11 @@ public class MainTest extends OpMode {
 
     public void init()
     {
-        dt = new Drivetrain(hardwareMap); // construct drivetrain object
+        alliance = Alliance.RED; //todo add a way to know this
+        dt = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
-        vision = new Vision(hardwareMap); // construct the camera object
+        vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
         comms = new TelemetryUtils(telemetry,dt,launcher,vision,intake); // construct the telemtryutils object sending it all the data
 
@@ -84,7 +87,6 @@ public class MainTest extends OpMode {
             comms.updateAll();
 
             Scheduler.execute(); //run everything scheduled
-
         }
     }
 
