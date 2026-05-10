@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name="PIDF Tuning Test", group = "Tests")
 @Configurable
@@ -17,27 +18,28 @@ public class pidfTuningTest extends OpMode {
     private Launcher launcher;
     private Intake intake;
 
+    private DcMotorEx flywheel;
     private Telemetry baseTelemetry;
     private TelemetryManager panelsTelemetry;
-
-    public static double kP = 0;
-    public static double kS = 0;
-    public static double kV = 0;
 
     public void init()
     {
         intake = new Intake(hardwareMap);
         launcher = new Launcher(hardwareMap, intake);
-
+        flywheel = hardwareMap.get(DcMotorEx.class, "launcher");
         this.baseTelemetry = telemetry;
         this.panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     }
 
     public void loop()
     {
-        if (gamepad1.right_bumper)
+        if (gamepad2.right_bumper)
         {
-            launcher.setPower(kS);
+            launcher.setTarget(4000);
+        }
+        if (gamepad2.left_bumper)
+        {
+            launcher.setTarget(3000);
         }
     }
 

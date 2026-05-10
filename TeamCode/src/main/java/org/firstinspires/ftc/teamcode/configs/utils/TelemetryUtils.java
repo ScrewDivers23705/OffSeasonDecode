@@ -31,6 +31,7 @@ public class TelemetryUtils {
         this.baseTelemetry = baseTelemetry;
         this.panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         this.fieldManager = PanelsField.INSTANCE.getField();
+        fieldManager.setOffsets(PanelsField.INSTANCE.getPresets().getPEDRO_PATHING());
 
         this.dt = dt;
         this.launcherSubsystem = launcher;
@@ -115,6 +116,7 @@ public class TelemetryUtils {
      */
     private void drawField() {
         if (dt != null && dt.follower != null) {
+
             double x = dt.follower.getPose().getX();
             double y = dt.follower.getPose().getY();
             double heading = dt.follower.getPose().getHeading();
@@ -134,7 +136,6 @@ public class TelemetryUtils {
                     x + lineLength * Math.cos(heading),
                     y + lineLength * Math.sin(heading)
             );
-
             // 5. Push the canvas
             fieldManager.update();
         }

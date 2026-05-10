@@ -5,7 +5,6 @@ import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Kicker;
@@ -13,6 +12,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 @TeleOp (name="Main Test", group = "Tests")
 public class MainTest extends OpMode {
@@ -57,6 +57,16 @@ public class MainTest extends OpMode {
             compactCmd = kicker.closeKickerCommand();
         }
 
+    }
+
+    public void init_loop()
+    {
+        telemetry.addData("Select alliance (dpad-down Red, dpad-up Blue)", alliance);
+        if (gamepad1.dpad_down)
+            alliance = Alliance.RED;
+        if (gamepad2.dpad_up)
+            alliance = Alliance.BLUE;
+        telemetry.update();
     }
 
 

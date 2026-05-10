@@ -6,6 +6,8 @@ import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+
+import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.ivy.Command;
 
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -23,7 +25,7 @@ import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants.ShooterConsta
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Configurable
 public class Launcher{
 
     private DcMotorEx launcher; // flywheel motor
@@ -90,7 +92,7 @@ public class Launcher{
             double currentRPM = getRPM();
             double error = targetRPM - currentRPM;
 
-            double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + ShooterConstants.kS; // pidf calculation
+            double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + Math.signum(targetRPM) * ShooterConstants.kS; // pidf calculation
 
             double voltageCompensatedPower = rawPower * (12.0 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
@@ -114,7 +116,7 @@ public class Launcher{
                     hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
                 }),
                 instant(() -> {
-                   intake.openGate();
+                   //intake.closeGate();
                 })
             ),
             waitUntil(this::isReady), // wait until flywheel is in correct speed
@@ -125,7 +127,7 @@ public class Launcher{
 
             instant(() -> {
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                active = false; // turns off the shooters
+                //active = false; // turns off the shooters
                 isBusy = false; // set as not busy and free to use
                 targetRPM = 0;
             })

@@ -40,10 +40,6 @@ public class hoodTest extends OpMode {
 
     public void loop()
     {
-        if (gamepad2.right_trigger > 0.5 && !launcher.isBusy()) {
-            servo.setPosition(hoodAngle);
-            Scheduler.schedule(launcher.buildRapidFireCommand(vision.getDistance()));
-        }
         if (gamepad2.right_bumper) {
             servo.setPosition(hoodAngle);
             Scheduler.schedule(launcher.buildShootCommand(vision.getDistance()));

@@ -58,6 +58,12 @@ public class Intake {
         rightFeeder.setPower(-RobotConstants.ShooterConstants.FULL_SPEED);
         state = -1;
     }
+    public void reverseMotor()
+    {
+        intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER);
+        gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
+        state = -1;
+    }
     public void openGate()
     {
         gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
