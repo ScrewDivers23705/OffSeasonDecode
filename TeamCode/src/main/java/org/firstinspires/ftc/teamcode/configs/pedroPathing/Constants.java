@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(11);
+            .mass(12);
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
             .rightFrontMotorName("right_front")
@@ -38,12 +38,12 @@ public class Constants {
                             RevHubOrientationOnRobot.UsbFacingDirection.UP
                     )
             )
-            .forwardPodY(1.62)
-            .strafePodX(6.11)
-            .forwardEncoderDirection(Encoder.FORWARD) // TODO check up direction by running localizationtest opmode in the tuning
+            .forwardEncoderDirection(Encoder.REVERSE)
             .strafeEncoderDirection(Encoder.FORWARD)
-            .forwardTicksToInches(-0.008613089) //TODO check up the multiplier by running the localization opmode
-            .strafeTicksToInches(-0.0290756031);
+            .forwardPodY(3.212783150010722)
+            .strafePodX( -6.938853076135274)
+            .forwardTicksToInches(0.0030006024591453934) //TODO check up the multiplier by running the localization opmode
+            .strafeTicksToInches(0.003002185047485069);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 

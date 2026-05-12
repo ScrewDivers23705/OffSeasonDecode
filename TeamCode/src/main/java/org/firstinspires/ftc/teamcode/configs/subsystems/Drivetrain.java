@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.configs.subsystems;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.behaviors.BlockedBehavior;
 import com.pedropathing.ivy.behaviors.ConflictBehavior;
@@ -20,7 +21,7 @@ public class Drivetrain{
     {
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
-
+        follower.setStartingPose(new Pose(72,72,Math.toRadians(90)));
         this.alliance = alliance;
     }
 
