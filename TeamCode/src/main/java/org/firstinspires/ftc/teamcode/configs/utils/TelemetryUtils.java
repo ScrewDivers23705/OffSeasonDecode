@@ -44,18 +44,10 @@ public class TelemetryUtils {
         }
     }
 
-    /**
-     * Call this in your OpMode to enable the webcam stream in the Panels Dashboard.
-     * Works best with OpenCv/VisionPortal.
-     */
-
     public void stopCameraStream() {
         PanelsCameraStream.INSTANCE.stopStream();
     }
 
-    /**
-     * Updates everything: Text telemetry, Field drawings, and physical Driver Station.
-     */
     public void updateAll() {
         // 1. Queue Text Telemetry
         updateDrivetrainText();

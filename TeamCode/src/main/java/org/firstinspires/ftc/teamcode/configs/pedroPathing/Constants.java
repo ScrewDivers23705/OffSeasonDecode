@@ -24,10 +24,12 @@ public class Constants {
             .rightRearMotorName("right_back")
             .leftRearMotorName("left_back")
             .leftFrontMotorName("left_front")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .xVelocity(62.5)
+            .yVelocity(48.3);
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
             .forwardEncoder_HardwareMapName("forward_odo")
             .strafeEncoder_HardwareMapName("left_back")
@@ -39,11 +41,11 @@ public class Constants {
                     )
             )
             .forwardEncoderDirection(Encoder.REVERSE)
-            .strafeEncoderDirection(Encoder.FORWARD)
+            .strafeEncoderDirection(Encoder.REVERSE)
             .forwardPodY(3.212783150010722)
             .strafePodX( -6.938853076135274)
-            .forwardTicksToInches(0.0030006024591453934) //TODO check up the multiplier by running the localization opmode
-            .strafeTicksToInches(0.003002185047485069);
+            .forwardTicksToInches(0.002967751849349) //DONE check up the multiplier by running the localization opmode
+            .strafeTicksToInches(0.002946318869670);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 

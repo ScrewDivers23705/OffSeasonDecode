@@ -67,7 +67,8 @@ public class Launcher{
     public void setPower(double power) {launcher.setPower(power);}
     public void setTarget(double target) { targetRPM = target;}
     public double getTarget() {return targetRPM;}
-
+    public void enable() {active = true;}
+    public void disable() {active = false;}
     public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
@@ -86,7 +87,7 @@ public class Launcher{
 
     public void periodic()
     {
-        if (active && targetRPM > 100)
+        if (active)
         {
             // calculate power using pidf controller and makeing sure to now use more power than motor can take (0-1)
             double currentRPM = getRPM();
@@ -96,7 +97,7 @@ public class Launcher{
 
             double voltageCompensatedPower = rawPower * (12.0 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
-            setPower(Math.max(0,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
+            setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
         }
        else
            launcher.setPower(0);
@@ -116,7 +117,7 @@ public class Launcher{
                     hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
                 }),
                 instant(() -> {
-                   //intake.closeGate();
+                   intake.openGate();
                 })
             ),
             waitUntil(this::isReady), // wait until flywheel is in correct speed
@@ -136,39 +137,34 @@ public class Launcher{
 
     public Command buildRapidFireCommand(double distance)
     {
-        List<Command> sequence = new ArrayList<>(); // create a list of commands
+        return sequential(
+                instant(() -> isBusy = true), //set launcher busy
 
-        sequence.add(instant(() -> isBusy = true)); // set as busy
-
-        sequence.add(
-                parallel( // do those commands in parallel
+                parallel(
                         instant(() -> {
-                            targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
-                            active = true;
+                            targetRPM = lookUpTable.get(distance)[1] * 1.05; // get rpm from the lookuptable
+                            active = true; // set motor as active
                         }),
-                        instant(() -> hood.setPosition(lookUpTable.get(distance)[0])) // set hood position as value from lookuptable
-                )
-        );
+                        instant(() -> {
+                            hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
+                        }),
+                        instant(() -> {
+                            intake.openGate();
+                        })
+                ),
+                waitUntil(this::isReady), // wait until flywheel is in correct speed
 
-        for (int i = 0; i < 3; i++) // loop 3 times to shoot all 3 artifacts
-        {
-            sequence.add(waitUntil(this::isReady)); // wait until the flywheel is ready to fire
-            sequence.add(instant(this::runFeeders)); // start feeding artifact to the flywheel
-            sequence.add(waitMs(ShooterConstants.FEED_TIME_MILLISECONDS)); // wait for artifact to pass through the feeders
-            sequence.add(instant(this::stopFeeders)); // stop feeding artifacts into the flywheel
+                instant(this::runFeeders), // start feeding artifacts for flywheel
 
-            sequence.add(waitMs(200)); // buffer, giving the encoder time to read the rpm drop from shooting
-        }
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 4), // wait until artifact completly passed through
 
-        sequence.add(
                 instant(() -> {
+                    this.stopFeeders();  // stop feeders to not make 2 artifacts pass
+                    //active = false; // turns off the shooters
+                    isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
-                    active = false;
-                    isBusy = false;
                 })
         );
-
-        return sequential(sequence.toArray(new Command[0]));
     }
 
 
