@@ -78,9 +78,9 @@ public class Launcher{
     }
     public void stopFeeders()
     {
-        leftFeeder.setPower(ShooterConstants.STOP_SPEED);
-        rightFeeder.setPower(ShooterConstants.STOP_SPEED);
         intake.disable();
+        leftFeeder.setPower(ShooterConstants.FULL_SPEED);
+        rightFeeder.setPower(-ShooterConstants.FULL_SPEED);
     }
     public boolean isBusy() {return isBusy;}
     /* ======================= COMMANDS =======================  */

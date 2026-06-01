@@ -10,7 +10,7 @@ public class RobotConstants {
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 350; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 165; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double RPM_TOLERANCE = 25.0;
@@ -38,7 +38,7 @@ public class RobotConstants {
 
     public static class IntakeConstants { // constants for intake
         public static final double CLOSE_POS = 0.65; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0.1; // gate pos to let artifacts go through
+        public static final double OPEN_POS = 0.275; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }
