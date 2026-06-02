@@ -19,7 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
-            .headingPIDFCoefficients(new PIDFCoefficients(0.9,0.0005,0.019,0.05));
+            .useSecondaryHeadingPIDF(true)
+            .headingPIDFCoefficients(new PIDFCoefficients(0.9,0.0005,0.019,0.05))
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.085, 0.00003, 0.0002, 0.003));
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
             .rightFrontMotorName("right_front")
@@ -30,8 +32,8 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(62.5)
-            .yVelocity(48.3);
+            .xVelocity(76.5683647148818)
+            .yVelocity(54.91491995416327);
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
             .forwardEncoder_HardwareMapName("forward_odo")
             .strafeEncoder_HardwareMapName("left_back")
@@ -42,8 +44,8 @@ public class Constants {
                             RevHubOrientationOnRobot.UsbFacingDirection.UP
                     )
             )
-            .forwardEncoderDirection(Encoder.REVERSE)
-            .strafeEncoderDirection(Encoder.REVERSE)
+            .forwardEncoderDirection(Encoder.FORWARD)
+            .strafeEncoderDirection(Encoder.FORWARD)
             .forwardPodY(3.212783150010722)
             .strafePodX( -6.938853076135274)
             .forwardTicksToInches(0.002967751849349) //DONE check up the multiplier by running the localization opmode
