@@ -21,7 +21,7 @@ public class Drivetrain{
     {
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
-        follower.setStartingPose(new Pose(72,72,Math.toRadians(90)));
+        follower.setStartingPose(new Pose(72,0,Math.toRadians(90)));
         this.alliance = alliance;
     }
 

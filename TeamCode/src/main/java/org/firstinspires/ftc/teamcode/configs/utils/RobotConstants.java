@@ -10,19 +10,21 @@ public class RobotConstants {
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 165; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 260; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double RPM_TOLERANCE = 25.0;
         public static  double kP = 0.0002;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
         public static  double kV = 0.00019; // launcher kA // TODO tune, check when vel=targetvel without any kp
+        public static double TESTRPM = 0;
+        public static double TESTANGLE = 0;
         public static LookUpTable addPoints() //TODO get new points by checking from diffrent distances
         {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
-            lookUpTable.add(0,0.07,3250);
-            lookUpTable.add(300,0.07,3250);
+            lookUpTable.add(80,0.02,2580);
+            lookUpTable.add(147,0.05,3000);
             //lookUpTable.add(72, 0.26, 3100); //dist (CM),angle , RPM
             //lookUpTable.add(86, 0.265, 3350);
             //lookUpTable.add(100,0.27, 3600);
@@ -44,9 +46,9 @@ public class RobotConstants {
     }
 
     public static class VisionConstants { // constants for vison
-        public static final double kP = 0.03 ; // drivetrain kp for rotation
-        public static final double RED_GOAL_OFFSET = -12; // offset for
-        public static final double BLUE_GOAL_OFFSET = 12; //todo make sure
+        public static final double kP = 0.0175     ; // drivetrain kp for rotation
+        public static final double RED_GOAL_OFFSET = -3; // offset for
+        public static final double BLUE_GOAL_OFFSET = 0; //todo make sure
         public static final int RED_ID = 24;
         public static final int BLUE_ID = 20;
         public static final double OFFSET_TOLERANCE = 1.5;

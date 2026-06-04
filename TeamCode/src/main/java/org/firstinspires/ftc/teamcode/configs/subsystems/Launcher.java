@@ -95,19 +95,53 @@ public class Launcher{
 
             double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + Math.signum(targetRPM) * ShooterConstants.kS; // pidf calculation
 
-            double voltageCompensatedPower = rawPower * (12.0 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
+            double voltageCompensatedPower = rawPower * (12.75 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
             setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
         }
        else
-           launcher.setPower(0);
+           launcher.setPower(-0.05);
     }
+    public Command SHOOTBYVALUEFORTEST(double RPM, double hoodAngle)
+    {
+        return sequential(
+                instant(() -> isBusy = true), //set launcher busy
+                instant(() -> {intake.reverseMotor();}),
+                waitMs(35),
+                instant(() -> intake.disable()),
+                parallel(
+                        instant(() -> {
+                            targetRPM = RPM;// get rpm from the lookuptable
+                            active = true; // set motor as active
+                        }),
+                        instant(() -> {
+                            hood.setPosition(hoodAngle); // set hood position as value from lookuptable
+                        }),
+                        instant(() -> {
+                            intake.openGate();
+                        })
+                ),
+                waitUntil(this::isReady), // wait until flywheel is in correct speed
 
+                instant(this::runFeeders), // start feeding artifacts for flywheel
+
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
+
+                instant(() -> {
+                    this.stopFeeders();  // stop feeders to not make 2 artifacts pass
+                    active = false; // turns off the shooters
+                    isBusy = false; // set as not busy and free to use
+                    targetRPM = 0;
+                })
+        );
+    }
     public Command buildShootCommand(double distance)
     {
         return sequential(
             instant(() -> isBusy = true), //set launcher busy
-
+            instant(() -> {intake.reverseMotor();}),
+            waitMs(35),
+            instant(() -> intake.disable()),
             parallel(
                 instant(() -> {
                     targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
@@ -128,7 +162,7 @@ public class Launcher{
 
             instant(() -> {
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                //active = false; // turns off the shooters
+                active = false; // turns off the shooters
                 isBusy = false; // set as not busy and free to use
                 targetRPM = 0;
             })

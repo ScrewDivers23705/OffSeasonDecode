@@ -79,7 +79,7 @@ public class Vision {
 
         double pTerm = error * VisionConstants.kP;
 
-        return clip(pTerm,-0.4,0.4);
+        return -clip(pTerm,-0.4,0.4);
     }
 
     public AprilTagDetection getTagById(int id)

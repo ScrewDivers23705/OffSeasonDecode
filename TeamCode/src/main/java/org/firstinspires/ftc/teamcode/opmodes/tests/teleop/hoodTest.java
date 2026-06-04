@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
@@ -25,7 +26,6 @@ public class hoodTest extends OpMode {
     private TelemetryManager panelsTelemetry;
     private Vision vision;
     private Servo servo;
-    private static double hoodAngle;
     public void init()
     {
         alliance = Alliance.RED;
@@ -38,14 +38,12 @@ public class hoodTest extends OpMode {
         this.panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     }
 
-    public void loop()
-    {
+    public void loop() {
         if (gamepad2.right_bumper) {
-            servo.setPosition(hoodAngle);
-            Scheduler.schedule(launcher.buildShootCommand(vision.getDistance()));
+            Scheduler.schedule(launcher.SHOOTBYVALUEFORTEST(RobotConstants.ShooterConstants.TESTRPM, RobotConstants.ShooterConstants.TESTANGLE));
         }
-        if (gamepad2.left_bumper)
-            servo.setPosition(hoodAngle);
+        launcher.periodic();
+        Scheduler.execute();
     }
 
     private void updateLauncherText() {

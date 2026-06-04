@@ -36,7 +36,6 @@ public class MainTest extends OpMode {
         dt = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap, launcher); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
-        intake.init(launcher);
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
         comms = new TelemetryUtils(telemetry,dt,launcher,vision,intake); // construct the telemtryutils object sending it all the data

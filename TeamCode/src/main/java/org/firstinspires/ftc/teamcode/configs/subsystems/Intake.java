@@ -20,7 +20,6 @@ public class Intake {
     private Servo gate;
     private CRServo leftFeeder, rightFeeder;
     private int state = 0;
-    private Launcher launcher;
     // Constructor for the hardware
     public Intake(HardwareMap hwMap, Launcher launcher)
     {
@@ -30,11 +29,6 @@ public class Intake {
         rightFeeder = hwMap.get(CRServo.class, "right_feeder");
         leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         gate = hwMap.get(Servo.class, "gate");
-        this.launcher = launcher;
-    }
-    public void init(Launcher launcher)
-    {
-        this.launcher = launcher;
     }
     public void enable()
     {
@@ -42,13 +36,11 @@ public class Intake {
         gate.setPosition(RobotConstants.IntakeConstants.CLOSE_POS);
         leftFeeder.setPower(RobotConstants.ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(-RobotConstants.ShooterConstants.FULL_SPEED);
-        launcher.setTarget(-500.0);
-        launcher.enable();
         state = 1;
     }
     public void feed()
     {
-        intake.setPower(-0.8);
+        intake.setPower(-0.9);
         state =1;
     }
     public void disable()
@@ -56,8 +48,6 @@ public class Intake {
         intake.setPower(0);
         leftFeeder.setPower(0);
         rightFeeder.setPower(0);
-        launcher.setTarget(0);
-        launcher.disable();
         state = 0;
     }
     public void reverse()
