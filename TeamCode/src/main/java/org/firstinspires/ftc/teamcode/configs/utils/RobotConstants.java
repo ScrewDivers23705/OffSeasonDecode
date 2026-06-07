@@ -10,11 +10,11 @@ public class RobotConstants {
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 260; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 285; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 1.0; // cr servo speed
         public static final double RPM_TOLERANCE = 25.0;
-        public static  double kP = 0.0002;     // launcher kP //TODO tune kp
+        public static  double kP = 0.00025;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
         public static  double kV = 0.00019; // launcher kA // TODO tune, check when vel=targetvel without any kp
         public static double TESTRPM = 0;

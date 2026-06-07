@@ -100,7 +100,7 @@ public class Launcher{
             setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
         }
        else
-           launcher.setPower(-0.05);
+           launcher.setPower(-0.2);
     }
     public Command SHOOTBYVALUEFORTEST(double RPM, double hoodAngle)
     {
@@ -158,7 +158,7 @@ public class Launcher{
 
             instant(this::runFeeders), // start feeding artifacts for flywheel
 
-            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
+            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.15), // wait until artifact completly passed through
 
             instant(() -> {
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass
