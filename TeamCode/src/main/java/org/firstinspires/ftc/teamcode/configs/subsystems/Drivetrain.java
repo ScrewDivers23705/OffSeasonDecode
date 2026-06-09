@@ -39,7 +39,7 @@ public class Drivetrain{
         else
             follower.setTeleOpDrive(forward,strafe,turn,true);
     }
-    public void update()
+    public void periodic()
     {
         follower.update();
     }
@@ -55,7 +55,6 @@ public class Drivetrain{
         return Command.build()
                 .setExecute(() -> {
                     drive(forward.getAsDouble(), strafe.getAsDouble(), turn.getAsDouble(), field.getAsBoolean()); // drive
-                    update(); // update pedro
                 })
                 .setDone(() -> false)
                 .setEnd(endCondition -> drive(0,0,0,false))

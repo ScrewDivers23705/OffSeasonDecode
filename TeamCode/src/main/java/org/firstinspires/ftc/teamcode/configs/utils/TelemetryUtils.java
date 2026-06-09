@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.configs.utils;
 
+import static org.firstinspires.ftc.teamcode.configs.subsystems.Vision.id;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import com.bylazar.field.FieldManager;
@@ -48,8 +50,9 @@ public class TelemetryUtils {
         PanelsCameraStream.INSTANCE.stopStream();
     }
 
-    public void updateAll() {
+    public void periodic() {
         // 1. Queue Text Telemetry
+        panelsTelemetry.debug(("Current alliance is :" + (id == 23 ? "BLUE" : "RED")));
         updateDrivetrainText();
         updateLauncherText();
         updateVisionText();
@@ -103,9 +106,8 @@ public class TelemetryUtils {
         panelsTelemetry.debug("");
     }
 
-    /**
-     * Handles the visual field drawing in the Panels "Field View" tab.
-     */
+     // Handles the visual field drawing in the Panels "Field View" tab.
+
     private void drawField() {
         if (dt != null && dt.follower != null) {
 

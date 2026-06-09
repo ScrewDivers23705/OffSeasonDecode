@@ -13,17 +13,12 @@ import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.robocol.RobocolConfig;
 
 import org.firstinspires.ftc.teamcode.configs.utils.LookUpTable;
-import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants.ShooterConstants;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Configurable
 public class Launcher{
@@ -133,6 +128,27 @@ public class Launcher{
                     isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
                 })
+        );
+    }
+    public Command stopFlywheel(){
+        return instant(() -> active = false);
+    }
+    public Command runFlywheelClose(){
+        return sequential(
+                instant(() -> targetRPM = 2300),
+                instant(() -> active = true)
+        );
+    }
+    public Command runFlywheelMid(){
+        return sequential(
+                instant(() -> targetRPM = 2800),
+                instant(() -> active = true)
+        );
+    }
+    public Command runFlywheelFar(){
+        return sequential(
+                instant(() -> targetRPM = 3600),
+                instant(() -> active = true)
         );
     }
     public Command buildShootCommand(double distance)

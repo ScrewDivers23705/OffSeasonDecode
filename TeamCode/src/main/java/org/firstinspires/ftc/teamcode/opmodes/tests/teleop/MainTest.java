@@ -12,12 +12,11 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
-import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 @TeleOp (name="Main Test", group = "Tests")
 public class MainTest extends OpMode {
     /* ================================ subsystems ================================ */
-    private Drivetrain dt;
+    private Drivetrain drivetrain;
     private Launcher launcher;
     private Intake intake;
     private Vision vision;
@@ -32,21 +31,21 @@ public class MainTest extends OpMode {
 
     public void init()
     {
-        alliance = Alliance.RED; //todo add a way to know this
-        dt = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
+        alliance = Alliance.RED; // alliance for vision and localization
+        drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap, launcher); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
-        comms = new TelemetryUtils(telemetry,dt,launcher,vision,intake); // construct the telemtryutils object sending it all the data
+        comms = new TelemetryUtils(telemetry, drivetrain,launcher,vision,intake); // construct the telemtryutils object sending it all the data
 
         Scheduler.reset(); // Clean schedule before running
 
         { /* ================================ COMMANDS ================================ */
-            Scheduler.schedule(dt.driveCommand(  // Creates the movement schedule
+            Scheduler.schedule(drivetrain.driveCommand(  // Creates the movement schedule
                     () -> -gamepad1.left_stick_y,
                     () -> -gamepad1.left_stick_x,
-                    () -> gamepad1.right_trigger > 0.5 ? vision.getAutoRotate() : -gamepad1.right_stick_x, // checks if right triggers is held and if so attempts to auto rotate
+                    () -> gamepad1.right_trigger > 0.5 ? vision.getAutoRotate() : -gamepad1.right_stick_x, // checks if right triggers is held and if so attempts to auto rotate therfore locks manual rotation
                     () -> false
             ));
 
@@ -80,21 +79,34 @@ public class MainTest extends OpMode {
         }
 
         { // Operator commands (nahag 2)
+            // ====================== INTAKE ========================
             if (gamepad2.left_trigger > 0.5 && !Scheduler.isScheduled(intakeCmd))
                 Scheduler.schedule(intakeCmd);
             if (gamepad2.left_bumper && !Scheduler.isScheduled(outtakeCmd))
                 Scheduler.schedule(outtakeCmd);
 
+            // ====================== SHOOT FLYWHEEL ========================
             if (gamepad2.right_trigger > 0.5 && !launcher.isBusy())
                 Scheduler.schedule(launcher.buildRapidFireCommand(vision.getDistance()));
             if (gamepad2.right_bumper && !launcher.isBusy())
                 Scheduler.schedule(launcher.buildShootCommand(vision.getDistance()));
+
+            // ====================== PREPARE FLYWHEEL BEFORE SHOOTING ========================
+            if (gamepad2.xWasPressed() && !launcher.isBusy())
+                Scheduler.schedule(launcher.runFlywheelClose());
+            if (gamepad2.yWasPressed() && !launcher.isBusy())
+                Scheduler.schedule(launcher.runFlywheelMid());
+            if (gamepad2.bWasPressed() && !launcher.isBusy())
+                Scheduler.schedule(launcher.runFlywheelFar());
+            if (gamepad2.aWasPressed() && !launcher.isBusy())
+                Scheduler.schedule(launcher.stopFlywheel());
         }
 
-        { // all the periodic commands
+        { // all the periodic commands that run every loop
+            drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
-            comms.updateAll();
+            comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }

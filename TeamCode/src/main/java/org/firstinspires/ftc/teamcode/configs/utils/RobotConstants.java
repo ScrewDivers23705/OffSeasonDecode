@@ -6,6 +6,11 @@ import com.pedropathing.geometry.Pose;
 public class RobotConstants {
     @Configurable
     public static class DrivetrainConstants {
+        public static final Pose BLUE_START_CLOSE_POSE = new Pose(14, 107.5, Math.toRadians(90));
+        public static final Pose BLUE_START_FAR_POSE = new Pose(62,8.2, Math.toRadians(90));
+        public static final Pose RED_START_CLOSE_POSE = new Pose(127.5,107.5,Math.toRadians(90));
+        public static final Pose RED_START_FAR_POSE = new Pose(80,8.2,Math.toRadians(90));
+
     }
     @Configurable
     public static class ShooterConstants {    //constants for shooter
