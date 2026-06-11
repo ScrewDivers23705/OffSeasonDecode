@@ -98,7 +98,7 @@ public class MainTest extends OpMode {
                 Scheduler.schedule(launcher.runFlywheelMid());
             if (gamepad2.bWasPressed() && !launcher.isBusy())
                 Scheduler.schedule(launcher.runFlywheelFar());
-            if (gamepad2.aWasPressed() && !launcher.isBusy())
+            if (gamepad2.aWasPressed())
                 Scheduler.schedule(launcher.stopFlywheel());
         }
 

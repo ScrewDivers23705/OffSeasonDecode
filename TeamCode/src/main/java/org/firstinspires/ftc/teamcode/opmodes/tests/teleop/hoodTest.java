@@ -43,6 +43,7 @@ public class hoodTest extends OpMode {
             Scheduler.schedule(launcher.SHOOTBYVALUEFORTEST(RobotConstants.ShooterConstants.TESTRPM, RobotConstants.ShooterConstants.TESTANGLE));
         }
         launcher.periodic();
+        vision.periodic();
         Scheduler.execute();
     }
 

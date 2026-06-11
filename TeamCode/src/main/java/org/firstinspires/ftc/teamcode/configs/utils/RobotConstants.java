@@ -30,7 +30,7 @@ public class RobotConstants {
 
             lookUpTable.add(80,0.02,2580);
             lookUpTable.add(147,0.05,3000);
-            //lookUpTable.add(72, 0.26, 3100); //dist (CM),angle , RPM
+            lookUpTable.add(194, 0.06, 3250); //dist (CM),angle , RPM
             //lookUpTable.add(86, 0.265, 3350);
             //lookUpTable.add(100,0.27, 3600);
             //lookUpTable.add(114, 0.28, 3800);

@@ -79,6 +79,7 @@ public class TelemetryUtils {
     private void updateLauncherText() {
         panelsTelemetry.debug("── LAUNCHER ────────────────────");
         if (launcherSubsystem != null) {
+            double targetRPM = launcherSubsystem.getTarget();
             panelsTelemetry.debug(String.format("RPM: %.0f / %.0f", launcherSubsystem.getRPM(), launcherSubsystem.getTarget()));
             panelsTelemetry.debug("Ready: " + (launcherSubsystem.isReady() ? "✓ YES" : "✗ NO"));
         } else {
