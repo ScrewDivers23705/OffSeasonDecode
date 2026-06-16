@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.configs.subsystems;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.behaviors.ConflictBehavior;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -96,6 +100,13 @@ public class Intake {
                 .setEnd(endCondition -> disable())
                 .requiring(this)
                 .setPriority(0);
+    }
+    public Command intakeCommandAuton()
+    {
+        return sequential(
+                instant(() -> this.enable())
+        );
+
     }
 
 }

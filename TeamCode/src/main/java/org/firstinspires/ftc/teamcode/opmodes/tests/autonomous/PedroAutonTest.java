@@ -8,6 +8,7 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
@@ -36,6 +37,7 @@ public class PedroAutonTest extends LinearOpMode {
     private Alliance alliance;
     /* ================================ PathChains ================================ */
     private PathChain preLoadsPose;
+    private PathChain intakeClose;
 
 
     public void initialize()
@@ -58,15 +60,22 @@ public class PedroAutonTest extends LinearOpMode {
                 .addPath(new BezierLine(startPose, shootPreloadPose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
                 .build();
-
+        intakeClose = drivetrain.follower.pathBuilder()
+                .addPath(new BezierCurve(drivetrain.follower.getPose(), controlPoint1, intakeFirst))
+                .setConstantHeadingInterpolation(intakeFirst.getHeading())
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
     }
     private void buildCommands()
     {
         schedule(
                 sequential(
                         follow(drivetrain.follower,preLoadsPose),
-                        launcher.buildRapidFireCommand(vision.getDistance()) //TODO find the distance and harcode it cus this shit is problematic af.
-
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand(90),
+                        intake.intakeCommandAuton(),
+                        follow(drivetrain.follower,intakeClose)
 
                 )
         );
