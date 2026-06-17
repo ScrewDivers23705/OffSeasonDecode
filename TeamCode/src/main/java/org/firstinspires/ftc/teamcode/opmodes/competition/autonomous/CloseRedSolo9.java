@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.opmodes.tests.autonomous;
+package org.firstinspires.ftc.teamcode.opmodes.competition.autonomous;
 
 
 
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
@@ -14,18 +15,17 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.*;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.*;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
-@Autonomous(name = "Pedro auton test", group = "test")
+@Autonomous(name = "CloseRedSolo9", group = "RED")
 @Configurable
-public class PedroAutonTest extends LinearOpMode {
+public class CloseRedSolo9 extends LinearOpMode {
 
 
     /* ================================ Subsystems ================================ */
@@ -38,6 +38,9 @@ public class PedroAutonTest extends LinearOpMode {
     /* ================================ PathChains ================================ */
     private PathChain preLoadsPose;
     private PathChain intakeClose;
+    private PathChain shootClose;
+    private PathChain intakeSecond;
+    private PathChain shootSecond;
 
 
     public void initialize()
@@ -61,9 +64,22 @@ public class PedroAutonTest extends LinearOpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
                 .build();
         intakeClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(drivetrain.follower.getPose(), controlPoint1, intakeFirst))
-                .setConstantHeadingInterpolation(intakeFirst.getHeading())
+                .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstPose))
+                .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
                 .build();
+        shootClose = drivetrain.follower.pathBuilder()
+                .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
+                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading())
+                .build();
+        intakeSecond = drivetrain.follower.pathBuilder()
+                .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
+                .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
+                .build();
+        shootSecond = drivetrain.follower.pathBuilder()
+                .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
+                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading())
+                .build();
+
     }
     private void buildCommands()
     {
@@ -72,9 +88,11 @@ public class PedroAutonTest extends LinearOpMode {
                         follow(drivetrain.follower,preLoadsPose),
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand(90),
-                        launcher.buildShootCommand(90),
-                        intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeClose)
+                        launcher.buildShootCommand( 90),
+                        parallel(
+                            intake.intakeCommandAuton(),
+                            follow(drivetrain.follower,intakeClose)
+                        )
 
                 )
         );
