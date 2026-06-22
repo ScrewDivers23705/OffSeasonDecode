@@ -15,11 +15,11 @@ public class RobotConstants {
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 285; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 290; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
-        public static final double FULL_SPEED = 1.0; // cr servo speed
+        public static final double FULL_SPEED = 0.8; // cr servo speed
         public static final double RPM_TOLERANCE = 25.0;
-        public static  double kP = 0.00025;     // launcher kP //TODO tune kp
+        public static  double kP = 0.0003;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
         public static  double kV = 0.00019; // launcher kA // TODO tune, check when vel=targetvel without any kp
         public static double TESTRPM = 0;
@@ -28,14 +28,16 @@ public class RobotConstants {
         {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
-            lookUpTable.add(80,0.02,2580);
-            lookUpTable.add(147,0.05,3000);
-            lookUpTable.add(194, 0.06, 3250); //dist (CM),angle , RPM
-            //lookUpTable.add(86, 0.265, 3350);
-            //lookUpTable.add(100,0.27, 3600);
-            //lookUpTable.add(114, 0.28, 3800);
-            //lookUpTable.add(126, 0.285, 4115);
-            //lookUpTable.add(150, 0.285, 4345);
+            lookUpTable.add(80, 0.02,2580);//dist (CM),angle , RPM
+            lookUpTable.add(100, 0.033,2600); // 12.85V
+            lookUpTable.add(120, 0.039,2680); // 12.78V
+            lookUpTable.add(146, 0.05,2865); // 12.93V
+            lookUpTable.add(158, 0.0545, 2985); // 13V
+            lookUpTable.add(194, 0.06, 3250); // 13V
+            lookUpTable.add(210, 0.077, 3425); // 13.5V
+            lookUpTable.add(231, 0.08, 3605); // 13.5V
+            lookUpTable.add(273.5, 0.0815, 3700);
+            lookUpTable.add(294, 0.086, 3875); // 13.2V
             //lookUpTable.add(207, 0.293, 4670);
             //lookUpTable.add(245,0.289,5100);
 
@@ -44,8 +46,8 @@ public class RobotConstants {
     }
 
     public static class IntakeConstants { // constants for intake
-        public static final double CLOSE_POS = 0.65; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0.275; // gate pos to let artifacts go through
+        public static final double CLOSE_POS = 0.7; // gate pos to stop artifacts
+        public static final double OPEN_POS = 0.225; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }

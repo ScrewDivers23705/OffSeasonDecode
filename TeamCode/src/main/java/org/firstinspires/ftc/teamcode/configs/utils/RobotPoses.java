@@ -12,7 +12,7 @@ public class RobotPoses {
             public static class Solo{
                 public static Pose startPose = RobotConstants.DrivetrainConstants.RED_START_CLOSE_POSE;
                 public static Pose shootPreloadPose = new Pose(101,100,Math.toRadians(45));
-                public static Pose intakeFirstControl1 = new Pose(83.485, 79.326);
+                public static Pose intakeFirstControl1 = new Pose(43.485, 69.326);
                 public static Pose intakeFirstPose = new Pose(126.562, 81.634,Math.toRadians(0));
                 public static Pose shootFirstPose = new Pose(95.000, 90.000, Math.toRadians(43));
                 public static Pose intakeSecondControl1 = new Pose(81.407, 52.968);

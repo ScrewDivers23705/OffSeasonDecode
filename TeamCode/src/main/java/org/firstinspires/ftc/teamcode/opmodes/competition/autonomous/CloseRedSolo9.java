@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmodes.competition.autonomous;
 
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
@@ -91,9 +92,27 @@ public class CloseRedSolo9 extends LinearOpMode {
                         launcher.buildShootCommand( 90),
                         parallel(
                             intake.intakeCommandAuton(),
-                            follow(drivetrain.follower,intakeClose)
-                        )
-
+                            follow(drivetrain.follower,intakeClose,true,0.75)
+                        ),
+                        waitMs(333),
+                        parallel(
+                                follow(drivetrain.follower, shootClose),
+                                launcher.runFlywheelMid()
+                        ),
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand( 90),
+                        parallel(
+                                intake.intakeCommandAuton(),
+                                follow(drivetrain.follower,intakeSecond,true,0.75)
+                        ),
+                        parallel(
+                                follow(drivetrain.follower, shootSecond),
+                                launcher.runFlywheelMid()
+                        ),
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand(90),
+                        launcher.buildShootCommand( 90)
                 )
         );
     }

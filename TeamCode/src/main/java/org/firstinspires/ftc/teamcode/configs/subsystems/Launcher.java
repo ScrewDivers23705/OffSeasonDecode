@@ -192,7 +192,7 @@ public class Launcher{
 
                 parallel(
                         instant(() -> {
-                            targetRPM = lookUpTable.get(distance)[1] * 1.05; // get rpm from the lookuptable
+                            targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
                             active = true; // set motor as active
                         }),
                         instant(() -> {
@@ -205,12 +205,21 @@ public class Launcher{
                 waitUntil(this::isReady), // wait until flywheel is in correct speed
 
                 instant(this::runFeeders), // start feeding artifacts for flywheel
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.35), // wait until artifact completely passed through
+                instant(this::stopFeeders),
+                waitMs(750),
+                instant(this::runFeeders), // start feeding artifacts for flywheel
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.2), // wait until artifact completely passed through
+                instant(this::stopFeeders),
+                waitMs(750),
+                instant(this::runFeeders), // start feeding artifacts for flywheel
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.1), // wait until artifact completely passed through
 
-                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 4), // wait until artifact completly passed through
+
 
                 instant(() -> {
                     this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                    //active = false; // turns off the shooters
+                    active = false; // turns off the shooters
                     isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
                 })
