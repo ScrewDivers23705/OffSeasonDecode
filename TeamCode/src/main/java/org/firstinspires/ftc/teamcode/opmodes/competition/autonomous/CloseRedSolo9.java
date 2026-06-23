@@ -119,7 +119,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                         follow(drivetrain.follower,preLoadsPose),
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand(90),
-                        launcher.buildShootCommand( 90),
+                        launcher.buildShootCommand(90),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower,intakeClose,true,0.7),
                         waitMs(400),
@@ -134,7 +134,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                         waitMs(50),
                         launcher.buildShootCommand(110),
                         launcher.buildShootCommand(110),
-                        launcher.buildShootCommand( 110),
+                        launcher.buildShootCommand(110),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower,intakeSecond,true,0.7),
                         waitMs(400),
@@ -150,7 +150,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                         waitMs(50),
                         launcher.buildShootCommand(125),
                         launcher.buildShootCommand(125),
-                        launcher.buildShootCommand( 125),
+                        launcher.buildShootCommand(125),
                         follow(drivetrain.follower,leave)
                 )
         );
