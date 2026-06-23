@@ -130,6 +130,11 @@ public class Launcher{
                 })
         );
     }
+    public Command openGate() {
+        return sequential(
+                instant(() -> intake.openGate())
+        );
+    }
     public Command stopFlywheel(){
         return instant(() -> active = false);
     }
@@ -174,7 +179,7 @@ public class Launcher{
 
             instant(this::runFeeders), // start feeding artifacts for flywheel
 
-            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.15), // wait until artifact completly passed through
+            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
 
             instant(() -> {
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass

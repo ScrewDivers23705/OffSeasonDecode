@@ -106,7 +106,12 @@ public class Intake {
         return sequential(
                 instant(() -> this.enable())
         );
-
+    }
+    public Command disableIntakeCommandAuton()
+    {
+        return sequential(
+                instant(() -> this.disable())
+        );
     }
 
 }

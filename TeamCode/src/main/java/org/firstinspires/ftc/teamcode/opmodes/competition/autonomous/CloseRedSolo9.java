@@ -12,6 +12,7 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -42,6 +43,9 @@ public class CloseRedSolo9 extends LinearOpMode {
     private PathChain shootClose;
     private PathChain intakeSecond;
     private PathChain shootSecond;
+    private PathChain leave;
+    private PathChain shakeFirst;
+    private PathChain shakeSecond;
 
 
     public void initialize()
@@ -65,8 +69,19 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
                 .build();
         intakeClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstPose))
+                .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstControl1 ,intakeFirstControl1, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .build();
+        shakeFirst = drivetrain.follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Pose(127.000, 82),
+                                new Pose(128.071, 81.568),
+                                new Pose(128.000, 81.600)
+                        )
+                )
+                .setTValueConstraint(0.95)
+                .setTangentHeadingInterpolation()
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -75,12 +90,27 @@ public class CloseRedSolo9 extends LinearOpMode {
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
+                .setTValueConstraint(0.95)
+                .build();
+        shakeSecond = drivetrain.follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Pose(132.5, 57),
+                                new Pose(132.571, 56.568),
+                                new Pose(133.5, 56.600)
+                        )
+                )
+                .setTValueConstraint(0.95)
+                .setTangentHeadingInterpolation()
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading())
                 .build();
-
+        leave = drivetrain.follower.pathBuilder()
+                .addPath(new BezierLine(shootPreloadPose,leavePose))
+                .setLinearHeadingInterpolation(shootSecondPose.getHeading(),leavePose.getHeading())
+                .build();
     }
     private void buildCommands()
     {
@@ -90,29 +120,38 @@ public class CloseRedSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand( 90),
-                        parallel(
-                            intake.intakeCommandAuton(),
-                            follow(drivetrain.follower,intakeClose,true,0.75)
-                        ),
-                        waitMs(333),
+                        intake.intakeCommandAuton(),
+                        follow(drivetrain.follower,intakeClose,true,0.7),
+                        waitMs(400),
+                        follow(drivetrain.follower, shakeFirst, true , 0.75),
+                        waitMs(400),
+                        intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootClose),
                                 launcher.runFlywheelMid()
                         ),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand( 90),
-                        parallel(
-                                intake.intakeCommandAuton(),
-                                follow(drivetrain.follower,intakeSecond,true,0.75)
-                        ),
+                        launcher.openGate(),
+                        waitMs(50),
+                        launcher.buildShootCommand(110),
+                        launcher.buildShootCommand(110),
+                        launcher.buildShootCommand( 110),
+                        intake.intakeCommandAuton(),
+                        follow(drivetrain.follower,intakeSecond,true,0.7),
+                        waitMs(400),
+                        follow(drivetrain.follower, shakeSecond, true, 0.75),
+                        waitMs(400),
+                        intake.disableIntakeCommandAuton(),
+                        waitMs(25),
                         parallel(
                                 follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid()
                         ),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand( 90)
+                        launcher.openGate(),
+                        waitMs(50),
+                        launcher.buildShootCommand(125),
+                        launcher.buildShootCommand(125),
+                        launcher.buildShootCommand( 125),
+                        follow(drivetrain.follower,leave)
                 )
         );
     }
