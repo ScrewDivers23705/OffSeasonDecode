@@ -75,8 +75,8 @@ public class CloseRedSolo9 extends LinearOpMode {
         shakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(127.000, 81),
-                                new Pose(128.071, 80.568),
+                                new Pose(128.000, 81),
+                                new Pose(128.1, 80.5),
                                 new Pose(128.000, 80.600)
                         )
                 )
@@ -84,7 +84,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .setTangentHeadingInterpolation()
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
+                .addPath(new BezierLine(new Pose(128.800, 80.600), shootFirstPose))
                 .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading())
                 .setTValueConstraint(0.925)
                 .build();
@@ -97,17 +97,17 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(132.5, 56.25),
-                                new Pose(132.571, 56),
-                                new Pose(133.5, 56.35)
+                                new Pose(132.6, 55.75),
+                                new Pose(132.5, 56.85)
                         )
                 )
-                .setTValueConstraint(0.925)
+                .setTimeoutConstraint(850)
                 .setTangentHeadingInterpolation()
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(new Pose(133.5,56.35),shootSecondControl1,shootSecondPose))
+                .addPath(new BezierCurve(new Pose(132.5,56.85),shootSecondControl1,shootSecondPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading())
-                .setTValueConstraint(0.925)
+                .setTValueConstraint(0.975)
                 .build();
         leave = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootPreloadPose,leavePose))
