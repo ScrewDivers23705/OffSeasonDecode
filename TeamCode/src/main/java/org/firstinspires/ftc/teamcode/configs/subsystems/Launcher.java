@@ -64,6 +64,7 @@ public class Launcher{
     public double getTarget() {return targetRPM;}
     public void enable() {active = true;}
     public void disable() {active = false;}
+    public void updateCurrent() {currentVoltage = batteryVoltageSensor.getVoltage();}
     public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
@@ -93,6 +94,9 @@ public class Launcher{
             double voltageCompensatedPower = rawPower * (12.75 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
             setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
+
+            if (currentRPM <targetRPM - 150)
+            this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
         }
        else
            launcher.setPower(-0.2);
@@ -160,6 +164,7 @@ public class Launcher{
     {
         return sequential(
             instant(() -> isBusy = true), //set launcher busy
+            instant(this::updateCurrent),
             instant(() -> {intake.reverseMotor();}),
             waitMs(35),
             instant(() -> intake.disable()),
@@ -193,6 +198,7 @@ public class Launcher{
     {
         return sequential(
                 instant(() -> isBusy = true), //set launcher busy
+                instant(this::updateCurrent),
                 instant(() -> {intake.reverseMotor();}),
                 waitMs(35),
                 instant(() -> intake.disable()),
