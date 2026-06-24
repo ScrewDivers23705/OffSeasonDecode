@@ -189,7 +189,39 @@ public class Launcher{
             })
         );
     }
+    public Command shootAutonCommand(double distance, double feedTime)
+    {
+        return sequential(
+                instant(() -> isBusy = true), //set launcher busy
+                instant(() -> {intake.reverseMotor();}),
+                waitMs(35),
+                instant(() -> intake.disable()),
+                parallel(
+                        instant(() -> {
+                            targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
+                            active = true; // set motor as active
+                        }),
+                        instant(() -> {
+                            hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
+                        }),
+                        instant(() -> {
+                            intake.openGate();
+                        })
+                ),
+                waitUntil(this::isReady), // wait until flywheel is in correct speed
 
+                instant(this::runFeeders), // start feeding artifacts for flywheel
+
+                waitMs(feedTime), // wait until artifact completly passed through
+
+                instant(() -> {
+                    this.stopFeeders();  // stop feeders to not make 2 artifacts pass
+                    active = false; // turns off the shooters
+                    isBusy = false; // set as not busy and free to use
+                    targetRPM = 0;
+                })
+        );
+    }
     public Command buildRapidFireCommand(double distance)
     {
         return sequential(

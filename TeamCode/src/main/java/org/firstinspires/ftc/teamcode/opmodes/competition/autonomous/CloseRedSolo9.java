@@ -117,13 +117,13 @@ public class CloseRedSolo9 extends LinearOpMode {
         schedule(
                 sequential(
                         follow(drivetrain.follower,preLoadsPose),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand(90),
-                        launcher.buildShootCommand(90),
+                        launcher.shootAutonCommand(90, 285),
+                        launcher.shootAutonCommand(90, 265),
+                        launcher.shootAutonCommand(90, 265),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeClose,true,0.7),
+                        follow(drivetrain.follower,intakeClose,true,0.9),
                         waitMs(400),
-                        follow(drivetrain.follower, shakeFirst, true , 0.75),
+                        follow(drivetrain.follower, shakeFirst, true , 0.85),
                         waitMs(400),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -132,25 +132,24 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(50),
-                        launcher.buildShootCommand(110),
-                        launcher.buildShootCommand(110),
-                        launcher.buildShootCommand(110),
+                        launcher.shootAutonCommand(110, 285),
+                        launcher.shootAutonCommand(110, 265),
+                        launcher.shootAutonCommand(110, 265),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeSecond,true,0.7),
+                        follow(drivetrain.follower,intakeSecond,true,0.9),
                         waitMs(400),
-                        follow(drivetrain.follower, shakeSecond, true, 0.75),
+                        follow(drivetrain.follower, shakeSecond, true, 0.85),
                         waitMs(400),
                         intake.disableIntakeCommandAuton(),
-                        waitMs(25),
                         parallel(
                                 follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid()
                         ),
                         launcher.openGate(),
                         waitMs(50),
-                        launcher.buildShootCommand(125),
-                        launcher.buildShootCommand(125),
-                        launcher.buildShootCommand(125),
+                        launcher.shootAutonCommand(125, 285),
+                        launcher.shootAutonCommand(125, 265),
+                        launcher.shootAutonCommand(125, 265),
                         follow(drivetrain.follower,leave)
                 )
         );
