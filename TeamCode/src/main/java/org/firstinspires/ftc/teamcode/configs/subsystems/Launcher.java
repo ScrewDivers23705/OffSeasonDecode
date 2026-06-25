@@ -32,7 +32,7 @@ public class Launcher{
     private double targetRPM = 0; // target velocity for flywheel
     private boolean isBusy = false;
     public double currentVoltage = 12.8;
-
+    private double lastRPM = 0;
     public LookUpTable lookUpTable; // lookuptable for vel/angle from dist
 
 
@@ -65,7 +65,7 @@ public class Launcher{
     public void enable() {active = true;}
     public void disable() {active = false;}
     public void updateCurrent() {currentVoltage = batteryVoltageSensor.getVoltage();}
-    public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE;}
+    public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE && Math.abs(targetRPM - lastRPM) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
         leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
@@ -83,23 +83,24 @@ public class Launcher{
 
     public void periodic()
     {
+        double currentRPM = getRPM();
         if (active)
         {
             // calculate power using pidf controller and makeing sure to now use more power than motor can take (0-1)
-            double currentRPM = getRPM();
             double error = targetRPM - currentRPM;
 
             double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + Math.signum(targetRPM) * ShooterConstants.kS; // pidf calculation
 
-            double voltageCompensatedPower = rawPower * (12.75 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
+            double voltageCompensatedPower = rawPower * (12.8 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
             setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
 
-            if (currentRPM <targetRPM - 150)
-            this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
+            if (currentRPM < targetRPM - 150 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE))
+                this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
         }
        else
            launcher.setPower(-0.2);
+       lastRPM = currentRPM;
     }
     public Command SHOOTBYVALUEFORTEST(double RPM, double hoodAngle)
     {
