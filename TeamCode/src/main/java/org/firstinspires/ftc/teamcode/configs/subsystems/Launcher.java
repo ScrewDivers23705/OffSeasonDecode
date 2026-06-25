@@ -70,7 +70,6 @@ public class Launcher{
     {
         leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(ShooterConstants.FULL_SPEED);
-        intake.feed();
     }
     public void stopFeeders()
     {
@@ -84,8 +83,12 @@ public class Launcher{
     public void periodic()
     {
         double currentRPM = getRPM();
-        if (active)
-        {
+        if (currentRPM < targetRPM - 100 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE)) {
+            this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
+            active = false;
+            launcher.setPower( -1);
+        }
+        if (active) {
             // calculate power using pidf controller and makeing sure to now use more power than motor can take (0-1)
             double error = targetRPM - currentRPM;
 
@@ -93,13 +96,10 @@ public class Launcher{
 
             double voltageCompensatedPower = rawPower * (12.8 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
-            setPower(Math.max(-1,Math.min(voltageCompensatedPower,1))); // dosen't go over motor limits
-
-            if (currentRPM < targetRPM - 150 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE))
-                this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
+            setPower(Math.max(-1, Math.min(voltageCompensatedPower, 1))); // dosen't go over motor limits
         }
-       else
-           launcher.setPower(-0.2);
+        else
+           launcher.setPower(-0.45);
        lastRPM = currentRPM;
     }
     public Command SHOOTBYVALUEFORTEST(double RPM, double hoodAngle)
@@ -216,14 +216,14 @@ public class Launcher{
                         })
                 ),
                 waitUntil(this::isReady), // wait until flywheel is in correct speed
-
+                instant(() -> {intake.forwardMotor();}),
                 instant(this::runFeeders), // start feeding artifacts for flywheel
 
                 waitMs(feedTime), // wait until artifact completly passed through
 
                 instant(() -> {
                     this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                    active = false; // turns off the shooters
+                    active = false;
                     isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
                 })

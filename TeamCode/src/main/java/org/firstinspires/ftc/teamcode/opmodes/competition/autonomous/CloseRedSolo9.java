@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmodes.competition.autonomous;
 
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
@@ -76,38 +77,39 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(128.000, 81),
-                                new Pose(128.1, 80.5),
-                                new Pose(128.000, 80.600)
+                                new Pose(128.1, 80.77),
+                                new Pose(128.000, 80.80)
                         )
                 )
-                .setTimeoutConstraint(800)
+                .setTValueConstraint(0.8)
+                .setTimeoutConstraint(350)
                 .setTangentHeadingInterpolation()
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(new Pose(128.800, 80.600), shootFirstPose))
+                .addPath(new BezierLine(new Pose(128.800, 80.800), shootFirstPose))
                 .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading())
                 .setTValueConstraint(0.925)
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
-                .setTValueConstraint(0.95)
                 .build();
         shakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(132.5, 56.25),
-                                new Pose(132.6, 55.75),
-                                new Pose(132.5, 56.85)
+                                new Pose(132.5, 55.8),
+                                new Pose(132.6, 55.5),
+                                new Pose(132.5, 55.6)
                         )
                 )
-                .setTimeoutConstraint(850)
+                .setTValueConstraint(0.85)
+                .setTimeoutConstraint(350)
                 .setTangentHeadingInterpolation()
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(new Pose(132.5,56.85),shootSecondControl1,shootSecondPose))
+                .addPath(new BezierCurve(new Pose(132.5,55.6),shootSecondControl1,shootSecondPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading())
-                .setTValueConstraint(0.975)
+                .setTValueConstraint(0.98)
                 .build();
         leave = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootPreloadPose,leavePose))
@@ -119,15 +121,14 @@ public class CloseRedSolo9 extends LinearOpMode {
         schedule(
                 sequential(
                         follow(drivetrain.follower,preLoadsPose),
-                        launcher.shootAutonCommand(90, 310),
-                        waitMs(25),
-                        launcher.shootAutonCommand(90, 310),
-                        waitMs(30),
-                        launcher.shootAutonCommand(90, 310),
+                        launcher.shootAutonCommand(92, 310),
+                        launcher.shootAutonCommand(92, 310),
+                        launcher.shootAutonCommand(92, 310),
+                        instant(launcher::disable),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeClose,true,0.7),
+                        follow(drivetrain.follower,intakeClose,true,0.6),
                         waitMs(500),
-                        follow(drivetrain.follower, shakeFirst, true , 0.75),
+                        follow(drivetrain.follower, shakeFirst, true , 0.7),
                         waitMs(600),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -136,15 +137,14 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(75),
-                        launcher.shootAutonCommand(110, 310),
-                        waitMs(25),
-                        launcher.shootAutonCommand(110, 310),
-                        waitMs(25),
-                        launcher.shootAutonCommand(110, 310),
+                        launcher.shootAutonCommand(107, 260),
+                        launcher.shootAutonCommand(107, 270),
+                        launcher.shootAutonCommand(107, 325),
+                        instant(launcher::disable),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeSecond,true,0.7),
+                        follow(drivetrain.follower,intakeSecond,true,0.6),
                         waitMs(500),
-                        follow(drivetrain.follower, shakeSecond, true, 0.7),
+                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
                         waitMs(600),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -153,11 +153,10 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(75),
-                        launcher.shootAutonCommand(125, 310),
-                        waitMs(25),
-                        launcher.shootAutonCommand(125, 310),
-                        waitMs(25),
-                        launcher.shootAutonCommand(125, 310),
+                        launcher.shootAutonCommand(115, 260),
+                        launcher.shootAutonCommand(115, 270),
+                        launcher.shootAutonCommand(115, 310),
+                        instant(launcher::disable),
                         follow(drivetrain.follower,leave)
                 )
         );

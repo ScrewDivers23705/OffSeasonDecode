@@ -68,6 +68,11 @@ public class Intake {
         gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
         state = -1;
     }
+    public void forwardMotor()
+    {
+        intake.setPower(RobotConstants.IntakeConstants.FORWARD_POWER);
+        state = 1;
+    }
     public void openGate()
     {
         gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);

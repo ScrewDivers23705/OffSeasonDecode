@@ -17,8 +17,8 @@ public class RobotConstants {
 
         public static final long FEED_TIME_MILLISECONDS = 270; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
-        public static final double FULL_SPEED = 1.0; // cr servo speed
-        public static final double RPM_TOLERANCE = 25.0;
+        public static final double FULL_SPEED = 0.65; // cr servo speed
+        public static final double RPM_TOLERANCE = 30.0;
         public static  double kP = 0.00031;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
         public static  double kV = 0.00019; // launcher kA // TODO tune, check when vel=targetvel without any kp
@@ -46,7 +46,7 @@ public class RobotConstants {
     }
 
     public static class IntakeConstants { // constants for intake
-        public static final double CLOSE_POS = 0.72; // gate pos to stop artifacts
+        public static final double CLOSE_POS = 0.7; // gate pos to stop artifacts
         public static final double OPEN_POS = 0.225; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
