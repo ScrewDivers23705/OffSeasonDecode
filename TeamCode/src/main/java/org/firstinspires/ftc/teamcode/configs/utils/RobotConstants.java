@@ -15,7 +15,7 @@ public class RobotConstants {
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 270; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 325; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 0.65; // cr servo speed
         public static final double RPM_TOLERANCE = 30.0;

@@ -16,6 +16,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -26,17 +27,18 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.*;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
+
+import java.util.List;
+
 @Autonomous(name = "CloseRedSolo9", group = "RED")
 @Configurable
 public class CloseRedSolo9 extends LinearOpMode {
-
+    private List<LynxModule> hubs;
 
     /* ================================ Subsystems ================================ */
     private Drivetrain drivetrain;
     private Launcher launcher;
     private Intake intake;
-    private Vision vision;
-    private TelemetryUtils comms;
     private Alliance alliance;
     /* ================================ PathChains ================================ */
     private PathChain preLoadsPose;
@@ -55,13 +57,17 @@ public class CloseRedSolo9 extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap, launcher); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
-        vision = new Vision(hardwareMap, alliance); // construct the camera object
-        comms = new TelemetryUtils(telemetry, drivetrain, launcher, vision, intake); // construct the telemtryutils object sending it all the data
         Scheduler.reset();
 
         drivetrain.follower.setPose(startPose);
 
         buildPaths();
+
+        hubs = hardwareMap.getAll(LynxModule.class);
+        for (LynxModule h : hubs)
+            h.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        Scheduler.reset(); // Clean schedule before running
+
     }
     private void buildPaths()
     {
@@ -121,9 +127,9 @@ public class CloseRedSolo9 extends LinearOpMode {
         schedule(
                 sequential(
                         follow(drivetrain.follower,preLoadsPose),
-                        launcher.shootAutonCommand(92, 310),
-                        launcher.shootAutonCommand(92, 310),
-                        launcher.shootAutonCommand(92, 310),
+                        launcher.shootAutonCommand(92, 333),
+                        launcher.shootAutonCommand(92, 333),
+                        launcher.shootAutonCommand(92, 333),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower,intakeClose,true,0.6),
@@ -137,9 +143,9 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(75),
-                        launcher.shootAutonCommand(107, 260),
-                        launcher.shootAutonCommand(107, 270),
-                        launcher.shootAutonCommand(107, 325),
+                        launcher.shootAutonCommand(107, 333),
+                        launcher.shootAutonCommand(107, 333),
+                        launcher.shootAutonCommand(107, 333),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower,intakeSecond,true,0.6),
@@ -153,9 +159,9 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(75),
-                        launcher.shootAutonCommand(115, 260),
-                        launcher.shootAutonCommand(115, 270),
-                        launcher.shootAutonCommand(115, 310),
+                        launcher.shootAutonCommand(115, 333),
+                        launcher.shootAutonCommand(115, 333),
+                        launcher.shootAutonCommand(115, 333),
                         instant(launcher::disable),
                         follow(drivetrain.follower,leave)
                 )
@@ -169,11 +175,10 @@ public class CloseRedSolo9 extends LinearOpMode {
         waitForStart();
         buildCommands();
         while (opModeIsActive()) {
-            Scheduler.execute();
+            for (LynxModule h : hubs) h.clearBulkCache();
             drivetrain.periodic();
             launcher.periodic();
-            vision.periodic();
-            comms.periodic();
+            Scheduler.execute();
         }
     }
 }

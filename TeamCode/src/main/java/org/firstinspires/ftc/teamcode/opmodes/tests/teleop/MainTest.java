@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.opmodes.tests.teleop;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
@@ -13,8 +15,13 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
 
+import java.util.List;
+
 @TeleOp (name="Main Test", group = "Tests")
 public class MainTest extends OpMode {
+    ElapsedTime timer = new ElapsedTime();
+    double loopTimeSum = 0;
+    double loops = 0;
     /* ================================ subsystems ================================ */
     private Drivetrain drivetrain;
     private Launcher launcher;
@@ -28,6 +35,8 @@ public class MainTest extends OpMode {
     private Command outtakeCmd;
     private Command expandCmd;
     private Command compactCmd;
+    /* ================================ LOOPTIMES ================================ */
+    private List<LynxModule> hubs;
 
     public void init()
     {
@@ -39,6 +48,9 @@ public class MainTest extends OpMode {
         kicker = new Kicker(hardwareMap); // construct the kicker object
         comms = new TelemetryUtils(telemetry, drivetrain,launcher,vision,intake); // construct the telemtryutils object sending it all the data
 
+        hubs = hardwareMap.getAll(LynxModule.class);
+        for (LynxModule h : hubs)
+            h.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         Scheduler.reset(); // Clean schedule before running
 
         { /* ================================ COMMANDS ================================ */
@@ -71,6 +83,17 @@ public class MainTest extends OpMode {
 
     public void loop()
     {
+        for (LynxModule h : hubs)
+            h.clearBulkCache();
+
+
+        double loopTime = timer.seconds();
+        loopTimeSum += loopTime;
+        loops++;
+        timer.reset();
+        telemetry.addData("Loop Time (ms)",loopTime * 1000);
+        telemetry.addData("Average Loop Time (ms)",(loopTimeSum / loops)* 1000);
+
         { // Driver command (lo nahag 2)
             if (gamepad1.left_trigger_pressed && !Scheduler.isScheduled(expandCmd))
                 Scheduler.schedule(expandCmd);
@@ -106,7 +129,7 @@ public class MainTest extends OpMode {
             drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
-            comms.periodic();
+            //comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }

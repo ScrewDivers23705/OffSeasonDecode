@@ -32,6 +32,7 @@ public class Launcher{
     private double targetRPM = 0; // target velocity for flywheel
     private boolean isBusy = false;
     public double currentVoltage = 12.8;
+    double currentRPM = 0;
     private double lastRPM = 0;
     public LookUpTable lookUpTable; // lookuptable for vel/angle from dist
 
@@ -65,7 +66,7 @@ public class Launcher{
     public void enable() {active = true;}
     public void disable() {active = false;}
     public void updateCurrent() {currentVoltage = batteryVoltageSensor.getVoltage();}
-    public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - getRPM()) < ShooterConstants.RPM_TOLERANCE && Math.abs(targetRPM - lastRPM) < ShooterConstants.RPM_TOLERANCE;}
+    public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - currentRPM) < ShooterConstants.RPM_TOLERANCE && Math.abs(targetRPM - lastRPM) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
         leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
@@ -82,7 +83,7 @@ public class Launcher{
 
     public void periodic()
     {
-        double currentRPM = getRPM();
+        currentRPM = getRPM();
         if (currentRPM < targetRPM - 100 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE)) {
             this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
             active = false;
