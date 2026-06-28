@@ -129,7 +129,7 @@ public class MainTest extends OpMode {
             drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
-            //comms.periodic();
+            comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }

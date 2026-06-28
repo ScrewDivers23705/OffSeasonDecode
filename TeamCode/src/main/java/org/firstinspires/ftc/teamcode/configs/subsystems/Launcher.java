@@ -71,6 +71,7 @@ public class Launcher{
     {
         leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(ShooterConstants.FULL_SPEED);
+        intake.feed();
     }
     public void stopFeeders()
     {
@@ -95,7 +96,7 @@ public class Launcher{
 
             double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + Math.signum(targetRPM) * ShooterConstants.kS; // pidf calculation
 
-            double voltageCompensatedPower = rawPower * (12.8 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
+            double voltageCompensatedPower = rawPower * (12.6 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
             setPower(Math.max(-1, Math.min(voltageCompensatedPower, 1))); // dosen't go over motor limits
         }
@@ -201,8 +202,8 @@ public class Launcher{
         return sequential(
                 instant(() -> isBusy = true), //set launcher busy
                 instant(this::updateCurrent),
-                instant(() -> {intake.reverseMotor();}),
-                waitMs(35),
+                instant(() -> {intake.setPower(1.0);}),
+                waitMs(75),
                 instant(() -> intake.disable()),
                 parallel(
                         instant(() -> {

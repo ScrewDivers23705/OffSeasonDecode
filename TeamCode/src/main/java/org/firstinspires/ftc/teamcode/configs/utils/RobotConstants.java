@@ -28,9 +28,10 @@ public class RobotConstants {
         {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
-            lookUpTable.add(80, 0.02,2580);//dist (CM),angle , RPM
-            lookUpTable.add(100, 0.033,2600); // 12.85V
-            lookUpTable.add(120, 0.039,2680); // 12.78V
+            lookUpTable.add(76, 0.033,2500);//dist (CM),angle , RPM
+            lookUpTable.add(89, 0.045, 2600); // 12.5V // TODO keep working on LUT
+            lookUpTable.add(102, 0.054,2675); // 12.5V
+            lookUpTable.add(120, 0.06,2750); // 12.35v
             lookUpTable.add(146, 0.05,2865); // 12.93V
             lookUpTable.add(158, 0.0545, 2985); // 13V
             lookUpTable.add(194, 0.06, 3250); // 13V
@@ -38,16 +39,13 @@ public class RobotConstants {
             lookUpTable.add(231, 0.08, 3605); // 13.5V
             lookUpTable.add(273.5, 0.0815, 3700);
             lookUpTable.add(294, 0.086, 3875); // 13.2V
-            //lookUpTable.add(207, 0.293, 4670);
-            //lookUpTable.add(245,0.289,5100);
-
             return lookUpTable;
         }
     }
 
     public static class IntakeConstants { // constants for intake
-        public static final double CLOSE_POS = 0.7; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0.225; // gate pos to let artifacts go through
+        public static final double CLOSE_POS = 0.59; // gate pos to stop artifacts
+        public static final double OPEN_POS = 0; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }

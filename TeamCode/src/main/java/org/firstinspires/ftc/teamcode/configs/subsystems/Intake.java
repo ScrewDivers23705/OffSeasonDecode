@@ -62,6 +62,13 @@ public class Intake {
         rightFeeder.setPower(-RobotConstants.ShooterConstants.FULL_SPEED);
         state = -1;
     }
+    public void setPower(double power)
+    {
+        state = 1;
+        if(power > 0)
+            state = -1;
+        intake.setPower(power);
+    }
     public void reverseMotor()
     {
         intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER);
