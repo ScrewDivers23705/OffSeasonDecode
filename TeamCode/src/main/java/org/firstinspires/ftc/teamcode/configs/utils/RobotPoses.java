@@ -16,7 +16,7 @@ public class RobotPoses {
                 public static Pose intakeFirstPose = new Pose(128, 81,Math.toRadians(0));
                 public static Pose shootFirstPose = new Pose(95.000, 90.000, Math.toRadians(46.5));
                 public static Pose intakeSecondControl1 = new Pose(81.407, 49.968);
-                public static Pose intakeSecondPose = new Pose(132.5, 55.8, Math.toRadians(0));
+                public static Pose intakeSecondPose = new Pose(133.5, 55.4, Math.toRadians(0));
                 public static Pose shootSecondControl1 = new Pose(101.648, 56.636);
                 public static Pose shootSecondPose = new Pose(84.5, 102, Math.toRadians(32));
                 public static Pose leavePose = new Pose(86.266, 110, Math.toRadians(90));

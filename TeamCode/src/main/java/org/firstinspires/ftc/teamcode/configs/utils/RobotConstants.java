@@ -17,7 +17,7 @@ public class RobotConstants {
 
         public static final long FEED_TIME_MILLISECONDS = 325; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
-        public static final double FULL_SPEED = 0.65; // cr servo speed
+        public static final double FULL_SPEED = 0.7; // cr servo speed
         public static final double RPM_TOLERANCE = 30.0;
         public static  double kP = 0.00031;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
@@ -29,8 +29,8 @@ public class RobotConstants {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
             lookUpTable.add(76, 0.033,2500);//dist (CM),angle , RPM
-            lookUpTable.add(89, 0.045, 2600); // 12.5V // TODO keep working on LUT
-            lookUpTable.add(102, 0.054,2675); // 12.5V
+            lookUpTable.add(89, 0.046, 2600); // 12.5V // TODO keep working on LUT
+            lookUpTable.add(102, 0.0535,2675); // 12.5V
             lookUpTable.add(120, 0.06,2750); // 12.35v
             lookUpTable.add(146, 0.05,2865); // 12.93V
             lookUpTable.add(158, 0.0545, 2985); // 13V
@@ -44,8 +44,8 @@ public class RobotConstants {
     }
 
     public static class IntakeConstants { // constants for intake
-        public static final double CLOSE_POS = 0.59; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0; // gate pos to let artifacts go through
+        public static final double CLOSE_POS = 1.0; // gate pos to stop artifacts
+        public static final double OPEN_POS = 0.12; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }

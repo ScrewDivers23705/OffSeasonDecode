@@ -98,6 +98,8 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(250)
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .build();
         shakeSecond = drivetrain.follower.pathBuilder()
@@ -113,7 +115,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                 .setTangentHeadingInterpolation()
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(new Pose(132.5,55.6),shootSecondControl1,shootSecondPose))
+                .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading())
                 .setTValueConstraint(0.98)
                 .build();
@@ -127,15 +129,15 @@ public class CloseRedSolo9 extends LinearOpMode {
         schedule(
                 sequential(
                         follow(drivetrain.follower,preLoadsPose),
-                        launcher.shootAutonCommand(92, 433),
+                        launcher.shootAutonCommand(94, 533),
                         launcher.shootAutonCommand(92, 433),
                         launcher.shootAutonCommand(92, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeClose,true,0.5),
-                        waitMs(500),
-                        follow(drivetrain.follower, shakeFirst, true , 0.7),
-                        waitMs(600),
+                        follow(drivetrain.follower,intakeClose,true,0.4),
+                        waitMs(700),
+                        //follow(drivetrain.follower, shakeFirst, true , 0.5),
+                        //waitMs(600),
                         intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootClose),
@@ -143,25 +145,24 @@ public class CloseRedSolo9 extends LinearOpMode {
                         ),
                         launcher.openGate(),
                         waitMs(75),
-                        launcher.shootAutonCommand(107, 433),
+                        launcher.shootAutonCommand(107, 533),
                         launcher.shootAutonCommand(107, 433),
                         launcher.shootAutonCommand(107, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeSecond,true,0.6),
-                        waitMs(500),
+                        follow(drivetrain.follower,intakeSecond,true,0.5),
+                        waitMs(700),
                         //follow(drivetrain.follower, shakeSecond, true, 0.7),
-                        waitMs(600),
                         intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootSecond),
-                                launcher.runFlywheelMid()
-                        ),
-                        launcher.openGate(),
+                                launcher.runFlywheelMid(),
+                                launcher.openGate()
+                                ),
                         waitMs(75),
-                        launcher.shootAutonCommand(115, 433),
-                        launcher.shootAutonCommand(115, 433),
-                        launcher.shootAutonCommand(115, 433),
+                        launcher.shootAutonCommand(118, 533),
+                        launcher.shootAutonCommand(118, 433),
+                        launcher.shootAutonCommand(118, 433),
                         instant(launcher::disable),
                         follow(drivetrain.follower,leave)
                 )
