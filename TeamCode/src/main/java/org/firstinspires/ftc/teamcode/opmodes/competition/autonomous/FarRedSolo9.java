@@ -23,18 +23,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
-import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.*;
-
-import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
-import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Far.Solo.*;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
-@Autonomous(name = "CloseRedSolo9", group = "RED")
+@Autonomous(name = "FarRedSolo9", group = "RED")
 @Configurable
-public class CloseRedSolo9 extends LinearOpMode {
+public class FarRedSolo9 extends LinearOpMode {
     private List<LynxModule> hubs;
 
     /* ================================ Subsystems ================================ */
@@ -43,12 +40,12 @@ public class CloseRedSolo9 extends LinearOpMode {
     private Intake intake;
     private Alliance alliance;
     /* ================================ PathChains ================================ */
-    private PathChain preLoadsPose;
+    private PathChain shootPreLoad;
     private PathChain intakeClose;
-    private PathChain shootClose;
+    private PathChain shootFirst;
     private PathChain intakeSecond;
     private PathChain shootSecond;
-
+    private PathChain leave;
 
     public void initialize()
     {
@@ -70,30 +67,35 @@ public class CloseRedSolo9 extends LinearOpMode {
     }
     private void buildPaths()
     {
-        preLoadsPose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(startPose, shootPreloadPose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
+        shootPreLoad = drivetrain.follower.pathBuilder()
+                .addPath(new BezierLine(startPose, shootPose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), shootPose.getHeading())
                 .build();
         intakeClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstControl1 ,intakeFirstControl1, intakeFirstPose))
+                .addPath(new BezierCurve(shootPose, intakeFirstControl1, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(500)
                 .build();
-        shootClose = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(new Pose(128.800, 80.800), shootFirstPose))
-                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading() + Math.toRadians(2))
-                .setTValueConstraint(0.925)
+        shootFirst = drivetrain.follower.pathBuilder()
+                .addPath(new BezierLine(intakeFirstPose, shootPose))
+                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootPose.getHeading() + Math.toRadians(1))
+                .setTValueConstraint(0.98)
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
-                .setTValueConstraint(0.85)
-                .setTimeoutConstraint(500)
+                .addPath(new BezierCurve(shootPose,intakeSecondControl1,intakeSecondPose))
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(250)
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
-                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading() + Math.toRadians(1))
+                .addPath(new BezierLine(intakeSecondPose,shootPose))
+                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootPose.getHeading() + Math.toRadians(2))
                 .setTValueConstraint(0.98)
-                .setTimeoutConstraint(150)
+                .build();
+        leave = drivetrain.follower.pathBuilder()
+                .addPath(new BezierLine(shootPose,leavePose))
+                .setLinearHeadingInterpolation(shootPose.getHeading(),leavePose.getHeading())
                 .build();
     }
     private void buildCommands()
@@ -101,53 +103,44 @@ public class CloseRedSolo9 extends LinearOpMode {
         schedule(
                 sequential(
                         parallel(
-                                follow(drivetrain.follower,preLoadsPose),
-                                 launcher.runFlywheelClose()
-                                ),
-                        launcher.buildShootCommand(89.5),
-                        waitMs(25),
-                        launcher.buildShootCommand(89.5),
-                        waitMs(25),
-                        launcher.buildShootCommand(89.5),
+                                follow(drivetrain.follower,shootPreLoad),
+                                launcher.runFlywheelFar()
+                        ),
+                        launcher.shootAutonCommand(275, 533),
+                        launcher.shootAutonCommand(275, 433),
+                        launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
-                        follow(drivetrain.follower,intakeClose,true,0.5),
+                        follow(drivetrain.follower,intakeClose,true,0.6),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
                         intake.intakeCommandAuton(),
                         waitMs(300),
-                        intake.disableIntakeCommandAuton(),
                         parallel(
-                                follow(drivetrain.follower, shootClose),
+                                follow(drivetrain.follower, shootFirst),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
-                                ),
-                        launcher.buildShootCommand(115),
-                        waitMs(25),
-                        launcher.buildShootCommand(115),
-                        waitMs(25),
-                        launcher.buildShootCommand(115),
+                        ),
+                        launcher.shootAutonCommand(275, 533),
+                        launcher.shootAutonCommand(275, 433),
+                        launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower,intakeSecond,true,0.5),
-                        waitMs(350),
-                        intake.reverseIntakeCommandAuton(),
-                        waitMs(50),
-                        intake.intakeCommandAuton(),
-                        waitMs(300),                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
+                        waitMs(750),
+                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
                         intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
-                                ),
-                        launcher.buildShootCommand(117.5),
-                        waitMs(25),
-                        launcher.buildShootCommand(117.5),
-                        waitMs(25),
-                        launcher.buildShootCommand(117.5),
-                        instant(launcher::disable)
+                        ),
+                        launcher.shootAutonCommand(275, 533),
+                        launcher.shootAutonCommand(275, 433),
+                        launcher.shootAutonCommand(275, 433),
+                        instant(launcher::disable),
+                        follow(drivetrain.follower,leave)
                 )
         );
     }
@@ -162,8 +155,6 @@ public class CloseRedSolo9 extends LinearOpMode {
             for (LynxModule h : hubs) h.clearBulkCache();
             drivetrain.periodic();
             launcher.periodic();
-            telemetry.addData("CUR RPM", launcher.getRPM());
-            telemetry.addData("TARGET RPM", launcher.getRPM());
             Scheduler.execute();
         }
     }

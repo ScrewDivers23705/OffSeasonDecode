@@ -169,7 +169,7 @@ public class Launcher{
             instant(() -> isBusy = true), //set launcher busy
             instant(this::updateCurrent),
             instant(() -> {intake.reverseMotor();}),
-            waitMs(35),
+            waitMs(55),
             instant(() -> intake.disable()),
             parallel(
                 instant(() -> {
@@ -202,8 +202,8 @@ public class Launcher{
         return sequential(
                 instant(() -> isBusy = true), //set launcher busy
                 instant(this::updateCurrent),
-                instant(() -> {intake.setPower(1.0);}),
-                waitMs(75),
+                instant(() -> {intake.reverseMotor();}),
+                waitMs(35),
                 instant(() -> intake.disable()),
                 parallel(
                         instant(() -> {
@@ -218,16 +218,15 @@ public class Launcher{
                         })
                 ),
                 waitUntil(this::isReady), // wait until flywheel is in correct speed
-                instant(() -> {intake.forwardMotor();}),
                 instant(this::runFeeders), // start feeding artifacts for flywheel
 
                 waitMs(feedTime), // wait until artifact completly passed through
 
                 instant(() -> {
                     this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                    active = false;
+                    //active = false;
                     isBusy = false; // set as not busy and free to use
-                    targetRPM = 0;
+                    //targetRPM = 0;
                 })
         );
     }

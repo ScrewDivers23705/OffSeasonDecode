@@ -9,13 +9,13 @@ public class RobotConstants {
         public static final Pose BLUE_START_CLOSE_POSE = new Pose(14, 107.5, Math.toRadians(90));
         public static final Pose BLUE_START_FAR_POSE = new Pose(62,8.2, Math.toRadians(90));
         public static final Pose RED_START_CLOSE_POSE = new Pose(127.5,107.5,Math.toRadians(90));
-        public static final Pose RED_START_FAR_POSE = new Pose(80,8.2,Math.toRadians(90));
+        public static final Pose RED_START_FAR_POSE = new Pose(86.28,8.5,Math.toRadians(90));
 
     }
     @Configurable
     public static class ShooterConstants {    //constants for shooter
 
-        public static final long FEED_TIME_MILLISECONDS = 325; // servo time to get ball to launcher
+        public static final long FEED_TIME_MILLISECONDS = 375; // servo time to get ball to launcher
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 0.7; // cr servo speed
         public static final double RPM_TOLERANCE = 30.0;
@@ -29,7 +29,7 @@ public class RobotConstants {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
             lookUpTable.add(76, 0.033,2500);//dist (CM),angle , RPM
-            lookUpTable.add(89, 0.046, 2600); // 12.5V // TODO keep working on LUT
+            lookUpTable.add(89.5, 0.0435, 2600); // 13V // TODO keep working on LUT
             lookUpTable.add(102, 0.0535,2675); // 12.5V
             lookUpTable.add(120, 0.06,2750); // 12.35v
             lookUpTable.add(146, 0.05,2865); // 12.93V
@@ -37,7 +37,7 @@ public class RobotConstants {
             lookUpTable.add(194, 0.06, 3250); // 13V
             lookUpTable.add(210, 0.077, 3425); // 13.5V
             lookUpTable.add(231, 0.08, 3605); // 13.5V
-            lookUpTable.add(273.5, 0.0815, 3700);
+            lookUpTable.add(276, 0.08, 3755);
             lookUpTable.add(294, 0.086, 3875); // 13.2V
             return lookUpTable;
         }
@@ -45,7 +45,7 @@ public class RobotConstants {
 
     public static class IntakeConstants { // constants for intake
         public static final double CLOSE_POS = 1.0; // gate pos to stop artifacts
-        public static final double OPEN_POS = 0.12; // gate pos to let artifacts go through
+        public static final double OPEN_POS = 0.0; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed
     }

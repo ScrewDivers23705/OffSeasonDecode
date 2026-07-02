@@ -125,5 +125,11 @@ public class Intake {
                 instant(() -> this.disable())
         );
     }
+    public Command reverseIntakeCommandAuton()
+    {
+        return sequential(
+                instant(() -> this.reverseMotor())
+        );
+    }
 
 }
