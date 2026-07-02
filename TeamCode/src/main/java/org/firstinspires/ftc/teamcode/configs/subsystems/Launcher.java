@@ -96,12 +96,12 @@ public class Launcher{
 
             double rawPower = (ShooterConstants.kP * error) + (ShooterConstants.kV * targetRPM) + Math.signum(targetRPM) * ShooterConstants.kS; // pidf calculation
 
-            double voltageCompensatedPower = rawPower * (12.6 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
+            double voltageCompensatedPower = rawPower * (12.8 / currentVoltage); // compensate for diffrent battery volatges so would still be accurate
 
             setPower(Math.max(-1, Math.min(voltageCompensatedPower, 1))); // dosen't go over motor limits
         }
         else
-           launcher.setPower(-0.45);
+            setPower(-0.05);
        lastRPM = currentRPM;
     }
     public Command SHOOTBYVALUEFORTEST(double RPM, double hoodAngle)
@@ -109,7 +109,7 @@ public class Launcher{
         return sequential(
                 instant(() -> isBusy = true), //set launcher busy
                 instant(() -> {intake.reverseMotor();}),
-                waitMs(35),
+                waitMs(75),
                 instant(() -> intake.disable()),
                 parallel(
                         instant(() -> {
@@ -143,7 +143,7 @@ public class Launcher{
         );
     }
     public Command stopFlywheel(){
-        return instant(() -> active = false);
+        return parallel(instant(() -> active = false), instant(() -> targetRPM = 0));
     }
     public Command runFlywheelClose(){
         return sequential(
@@ -169,7 +169,7 @@ public class Launcher{
             instant(() -> isBusy = true), //set launcher busy
             instant(this::updateCurrent),
             instant(() -> {intake.reverseMotor();}),
-            waitMs(55),
+            waitMs(75),
             instant(() -> intake.disable()),
             parallel(
                 instant(() -> {
@@ -203,7 +203,7 @@ public class Launcher{
                 instant(() -> isBusy = true), //set launcher busy
                 instant(this::updateCurrent),
                 instant(() -> {intake.reverseMotor();}),
-                waitMs(35),
+                waitMs(75),
                 instant(() -> intake.disable()),
                 parallel(
                         instant(() -> {
