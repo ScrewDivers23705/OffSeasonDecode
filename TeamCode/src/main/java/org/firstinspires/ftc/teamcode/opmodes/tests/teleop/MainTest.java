@@ -42,7 +42,7 @@ public class MainTest extends OpMode {
     {
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
@@ -61,8 +61,8 @@ public class MainTest extends OpMode {
                     () -> false
             ));
 
-            intakeCmd = intake.intakeCommand(() -> gamepad2.left_trigger > 0.5);
-            outtakeCmd = intake.outtakeCommand(() -> gamepad2.left_bumper);
+            intakeCmd = intake.intakeCommand(() -> gamepad2.left_trigger > 0.5, launcher);
+            outtakeCmd = intake.outtakeCommand(() -> gamepad2.left_bumper, launcher);
 
             expandCmd = kicker.openKickerCommand();
             compactCmd = kicker.closeKickerCommand();

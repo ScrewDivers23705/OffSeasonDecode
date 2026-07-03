@@ -29,7 +29,7 @@ public class hoodTest extends OpMode {
     public void init()
     {
         alliance = Alliance.RED;
-        intake = new Intake(hardwareMap, launcher);
+        intake = new Intake(hardwareMap);
         launcher = new Launcher(hardwareMap, intake);
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         servo = hardwareMap.get(Servo.class, "hood");

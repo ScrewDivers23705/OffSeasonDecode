@@ -24,7 +24,7 @@ public class pidfTuningTest extends OpMode {
 
     public void init()
     {
-        intake = new Intake(hardwareMap, launcher);
+        intake = new Intake(hardwareMap);
         launcher = new Launcher(hardwareMap, intake);
         flywheel = hardwareMap.get(DcMotorEx.class, "launcher");
         this.baseTelemetry = telemetry;

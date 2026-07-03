@@ -39,7 +39,7 @@ public class MainTeleop extends OpMode {
     {
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
@@ -58,8 +58,8 @@ public class MainTeleop extends OpMode {
                     () -> false
             ));
 
-            intakeCmd = intake.intakeCommand(() -> gamepad2.left_trigger > 0.5);
-            outtakeCmd = intake.outtakeCommand(() -> gamepad2.left_bumper);
+            intakeCmd = intake.intakeCommand(() -> gamepad2.left_trigger > 0.5, launcher);
+            outtakeCmd = intake.outtakeCommand(() -> gamepad2.left_bumper, launcher);
 
             expandCmd = kicker.openKickerCommand();
             compactCmd = kicker.closeKickerCommand();
@@ -72,13 +72,13 @@ public class MainTeleop extends OpMode {
         telemetry.addData("Select alliance (dpad-down Red, dpad-up Blue)", alliance);
         if (gamepad1.dpad_down) {
             alliance = Alliance.RED;
-            drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-            vision = new Vision(hardwareMap, alliance); // construct the camera object
+            drivetrain.setAlliance(alliance); // construct drivetrain object
+            vision.setAlliance(alliance); // construct the camera object
         }
         if (gamepad2.dpad_up) {
             alliance = Alliance.BLUE;
-            drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-            vision = new Vision(hardwareMap, alliance); // construct the camera object
+            drivetrain.setAlliance(alliance); // construct drivetrain object
+            vision.setAlliance(alliance); // construct the camera object
         }
         telemetry.update();
     }

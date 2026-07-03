@@ -114,4 +114,16 @@ public class Vision {
             visionPortal.close();
         }
     }
+    public void setAlliance(Alliance a)
+    {
+        if (a == Alliance.RED) {
+            GOAL_OFFSET = VisionConstants.RED_GOAL_OFFSET;
+            id = VisionConstants.RED_ID;
+        }
+        else{
+            GOAL_OFFSET = VisionConstants.BLUE_GOAL_OFFSET;
+            id = VisionConstants.BLUE_ID;
+
+        }
+    }
 }

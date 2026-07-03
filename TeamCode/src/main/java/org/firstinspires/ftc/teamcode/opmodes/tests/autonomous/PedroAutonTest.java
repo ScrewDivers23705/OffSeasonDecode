@@ -44,7 +44,7 @@ public class PedroAutonTest extends LinearOpMode {
     {
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         comms = new TelemetryUtils(telemetry, drivetrain, launcher, vision, intake); // construct the telemtryutils object sending it all the data
@@ -73,7 +73,7 @@ public class PedroAutonTest extends LinearOpMode {
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand(90),
                         launcher.buildShootCommand(90),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeClose)
 
                 )

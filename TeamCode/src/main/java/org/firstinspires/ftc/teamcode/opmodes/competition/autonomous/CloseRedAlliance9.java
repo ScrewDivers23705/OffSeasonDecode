@@ -24,6 +24,8 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
+
 import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Alliance.*;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
     {
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         Scheduler.reset();
 
@@ -91,7 +93,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(intakeSecondPose, shootFirstPose))
+                .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootFirstPose.getHeading() + Math.toRadians(1))
                 .setTValueConstraint(0.98)
                 .setTimeoutConstraint(250)
@@ -111,12 +113,12 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         waitMs(25),
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower, intakeFirst,true,0.5),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
                         follow(drivetrain.follower, openGate, true, 0.8),
@@ -131,12 +133,12 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         waitMs(25),
                         launcher.buildShootCommand(152),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower, intakeSecond,true,0.5),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -166,5 +168,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
             launcher.periodic();
             Scheduler.execute();
         }
+        RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();
+
     }
 }

@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.configs.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -23,7 +24,7 @@ public class Drivetrain{
     {
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
-        follower.setStartingPose(new Pose(72,0,Math.toRadians(90)));
+        follower.setStartingPose(RobotConstants.DrivetrainConstants.autonEndPose);
         this.alliance = alliance;
     }
 
@@ -49,7 +50,7 @@ public class Drivetrain{
     private double getAngularOffset(){
         return (alliance == Alliance.BLUE) ? 0.0 : Math.PI;
     }
-
+    public void setAlliance(Alliance a) {this.alliance = a;}
     /* ======================= COMMANDS =======================  */
 
     public Command driveCommand(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier turn, BooleanSupplier field)

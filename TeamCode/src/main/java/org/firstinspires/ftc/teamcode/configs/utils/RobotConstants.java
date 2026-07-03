@@ -10,6 +10,7 @@ public class RobotConstants {
         public static final Pose BLUE_START_FAR_POSE = new Pose(62,8.2, Math.toRadians(90));
         public static final Pose RED_START_CLOSE_POSE = new Pose(127.5,107.5,Math.toRadians(90));
         public static final Pose RED_START_FAR_POSE = new Pose(86.28,8.5,Math.toRadians(90));
+        public static Pose autonEndPose = new Pose(127.5,107.5,Math.toRadians(90));
 
     }
     @Configurable

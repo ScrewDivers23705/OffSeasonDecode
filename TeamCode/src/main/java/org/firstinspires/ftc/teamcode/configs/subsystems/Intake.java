@@ -22,24 +22,18 @@ public class Intake {
 
     private DcMotor intake;
     private Servo gate;
-    private CRServo leftFeeder, rightFeeder;
     private int state = 0;
     // Constructor for the hardware
-    public Intake(HardwareMap hwMap, Launcher launcher)
+    public Intake(HardwareMap hwMap)
     {
         intake = hwMap.get(DcMotor.class, "intake");
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        leftFeeder = hwMap.get(CRServo.class, "left_feeder");
-        rightFeeder = hwMap.get(CRServo.class, "right_feeder");
-        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         gate = hwMap.get(Servo.class, "gate");
     }
     public void enable()
     {
         intake.setPower(RobotConstants.IntakeConstants.FORWARD_POWER);
         gate.setPosition(RobotConstants.IntakeConstants.CLOSE_POS);
-        leftFeeder.setPower(RobotConstants.ShooterConstants.FULL_SPEED);
-        rightFeeder.setPower(-RobotConstants.ShooterConstants.FULL_SPEED);
         state = 1;
     }
     public void feed()
@@ -50,16 +44,12 @@ public class Intake {
     public void disable()
     {
         intake.setPower(0);
-        leftFeeder.setPower(0);
-        rightFeeder.setPower(0);
         state = 0;
     }
     public void reverse()
     {
         intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER);
         gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
-        leftFeeder.setPower(RobotConstants.ShooterConstants.FULL_SPEED);
-        rightFeeder.setPower(-RobotConstants.ShooterConstants.FULL_SPEED);
         state = -1;
     }
     public void setPower(double power)
@@ -94,29 +84,43 @@ public class Intake {
     /* ======================= COMMANDS =======================  */
 
 
-    public Command intakeCommand(BooleanSupplier isHeld)
-    {
+    public Command intakeCommand(BooleanSupplier isHeld, Launcher launcher) {
         return Command.build()
-                .setStart(this::enable)
+                .setStart(() -> {
+                    this.enable();
+                    launcher.runFeeders(); // Control feeders safely through the launcher
+                })
                 .setDone(() -> !isHeld.getAsBoolean())
-                .setEnd(endCondition -> disable())
+                .setEnd(endCondition -> {
+                    this.disable();
+                    launcher.stopFeeders();
+                })
                 .requiring(this)
+                .requiring(launcher) // <--- THIS IS HOW YOU ADD MULTIPLE REQUIREMENTS
                 .setPriority(1);
     }
 
-    public Command outtakeCommand(BooleanSupplier isHeld)
-    {
+    public Command outtakeCommand(BooleanSupplier isHeld, Launcher launcher) {
         return Command.build()
-                .setStart(this::reverse)
+                .setStart(() -> {
+                    this.reverse();
+                    launcher.runFeeders(); // Run feeders backward or forward depending on preference
+                })
                 .setDone(() -> !isHeld.getAsBoolean())
-                .setEnd(endCondition -> disable())
+                .setEnd(endCondition -> {
+                    this.disable();
+                    launcher.stopFeeders();
+                })
                 .requiring(this)
+                .requiring(launcher) // Locks out the launcher here too
                 .setPriority(0);
     }
-    public Command intakeCommandAuton()
+
+    public Command intakeCommandAuton(Launcher launcher)
     {
         return sequential(
-                instant(() -> this.enable())
+                instant(this::enable),
+                instant(launcher::runFeeders)
         );
     }
     public Command disableIntakeCommandAuton()
@@ -131,5 +135,4 @@ public class Intake {
                 instant(() -> this.reverseMotor())
         );
     }
-
 }

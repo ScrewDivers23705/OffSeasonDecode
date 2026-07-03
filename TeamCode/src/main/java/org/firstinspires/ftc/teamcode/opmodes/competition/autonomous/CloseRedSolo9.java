@@ -54,7 +54,7 @@ public class CloseRedSolo9 extends LinearOpMode {
     {
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         Scheduler.reset();
 
@@ -110,12 +110,12 @@ public class CloseRedSolo9 extends LinearOpMode {
                         waitMs(25),
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeClose,true,0.5),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -129,12 +129,12 @@ public class CloseRedSolo9 extends LinearOpMode {
                         waitMs(25),
                         launcher.buildShootCommand(115),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeSecond,true,0.5),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         waitMs(300),                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
                         intake.disableIntakeCommandAuton(),
                         parallel(
@@ -166,5 +166,7 @@ public class CloseRedSolo9 extends LinearOpMode {
             telemetry.addData("TARGET RPM", launcher.getRPM());
             Scheduler.execute();
         }
+        RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();
+
     }
 }

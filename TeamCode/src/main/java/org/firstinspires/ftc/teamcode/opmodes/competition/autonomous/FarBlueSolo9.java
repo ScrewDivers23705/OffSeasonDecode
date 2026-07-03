@@ -23,6 +23,8 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
+import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
+
 import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Blue.Far.Solo.*;
 
 import java.util.List;
@@ -49,7 +51,7 @@ public class FarBlueSolo9 extends LinearOpMode {
     {
         alliance = Alliance.BLUE; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
-        intake = new Intake(hardwareMap, launcher); // construct intake object
+        intake = new Intake(hardwareMap); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         Scheduler.reset();
 
@@ -108,12 +110,12 @@ public class FarBlueSolo9 extends LinearOpMode {
                         launcher.shootAutonCommand(275, 433),
                         launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeClose,true,0.6),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         parallel(
                                 follow(drivetrain.follower, shootFirst),
@@ -124,7 +126,7 @@ public class FarBlueSolo9 extends LinearOpMode {
                         launcher.shootAutonCommand(275, 433),
                         launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(),
+                        intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeSecond,true,0.5),
                         waitMs(750),
                         //follow(drivetrain.follower, shakeSecond, true, 0.7),
@@ -155,5 +157,7 @@ public class FarBlueSolo9 extends LinearOpMode {
             launcher.periodic();
             Scheduler.execute();
         }
+        RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();
+
     }
 }

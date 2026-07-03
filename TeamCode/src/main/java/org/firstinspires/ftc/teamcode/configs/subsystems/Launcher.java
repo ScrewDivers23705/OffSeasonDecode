@@ -34,6 +34,8 @@ public class Launcher{
     public double currentVoltage = 12.8;
     double currentRPM = 0;
     private double lastRPM = 0;
+    private boolean isFeeding = false;
+    private boolean isRapidFiring = false;
     public LookUpTable lookUpTable; // lookuptable for vel/angle from dist
 
 
@@ -72,12 +74,14 @@ public class Launcher{
         leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(ShooterConstants.FULL_SPEED);
         intake.feed();
+        isFeeding = true;
     }
     public void stopFeeders()
     {
         intake.disable();
         leftFeeder.setPower(ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(-ShooterConstants.FULL_SPEED);
+        isFeeding = false;
     }
     public boolean isBusy() {return isBusy;}
     /* ======================= COMMANDS =======================  */
@@ -85,10 +89,9 @@ public class Launcher{
     public void periodic()
     {
         currentRPM = getRPM();
-        if (currentRPM < targetRPM - 100 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE)) {
+        if (currentRPM < targetRPM - 100 && lastRPM > (targetRPM - ShooterConstants.RPM_TOLERANCE) && isFeeding && !isRapidFiring) {
             this.stopFeeders(); // Detect when a ball is being shot using the flywheel. the second the flywheel loses speed it means its got the ball and we can stop the feeders.
             active = false;
-            launcher.setPower( -1);
         }
         if (active) {
             // calculate power using pidf controller and makeing sure to now use more power than motor can take (0-1)
@@ -239,6 +242,7 @@ public class Launcher{
                         instant(() -> {
                             targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
                             active = true; // set motor as active
+                            isRapidFiring = true;
                         }),
                         instant(() -> {
                             hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
@@ -264,6 +268,7 @@ public class Launcher{
 
                 instant(() -> {
                     this.stopFeeders();  // stop feeders to not make 2 artifacts pass
+                    isRapidFiring = false;
                     active = false; // turns off the shooters
                     isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
