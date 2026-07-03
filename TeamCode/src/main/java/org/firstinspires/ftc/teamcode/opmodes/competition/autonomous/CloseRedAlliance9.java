@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.*;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Alliance.*;
 
 import java.util.List;
 
@@ -72,27 +72,29 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeSecondControl1, intakeSecondControl1 ,intakeSecondControl1, intakeSecondPose))
+                .addPath(new BezierCurve(shootPreloadPose, intakeSecondControl1, intakeSecondControl2, intakeSecondPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
                 .build();
         openGate = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve())
+                .addPath(new BezierCurve(intakeSecondPose, gateControl1, gatePose))
+                .setConstantHeadingInterpolation(gatePose.getHeading())
+                .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(new Pose(128.800, 80.800), shootFirstPose))
-                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading() + Math.toRadians(2))
-                .setTValueConstraint(0.925)
+                .addPath(new BezierCurve(gatePose, shootSecondControl1, shootSecondPose))
+                .setLinearHeadingInterpolation(gatePose.getHeading(),shootSecondPose.getHeading())
+                .setTValueConstraint(0.995)
                 .build();
         intakeFirst = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(shootFirstPose,intakeSecondControl1,intakeSecondPose))
+                .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
                 .setTValueConstraint(0.85)
                 .setTimeoutConstraint(500)
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
-                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading() + Math.toRadians(1))
+                .addPath(new BezierLine(intakeSecondPose, shootFirstPose))
+                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootFirstPose.getHeading() + Math.toRadians(1))
                 .setTValueConstraint(0.98)
-                .setTimeoutConstraint(150)
+                .setTimeoutConstraint(250)
                 .build();
     }
     private void buildCommands()
@@ -115,18 +117,19 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
                         intake.intakeCommandAuton(),
-                        waitMs(300),                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
+                        waitMs(300),
                         intake.disableIntakeCommandAuton(),
+                        follow(drivetrain.follower, openGate, true, 0.8),
                         parallel(
-                                follow(drivetrain.follower, shootFirst),
+                                follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(152),
                         waitMs(25),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(152),
                         waitMs(25),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(152),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(),
                         follow(drivetrain.follower, intakeSecond,true,0.5),
@@ -141,13 +144,12 @@ public class CloseRedAlliance9 extends LinearOpMode {
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(130),
                         waitMs(25),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(130),
                         waitMs(25),
-                        launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(130), //TODO check for acutal distance
                         instant(launcher::disable)
-
                 )
         );
     }
