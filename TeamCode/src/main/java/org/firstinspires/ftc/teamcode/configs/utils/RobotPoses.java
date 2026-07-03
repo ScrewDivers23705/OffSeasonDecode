@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.configs.utils;
 
 import com.pedropathing.geometry.Pose;
 
+import org.firstinspires.ftc.teamcode.R;
+
 public class RobotPoses {
     public static class Red{
         public static class Close {
@@ -46,7 +48,46 @@ public class RobotPoses {
             }
         }
     }
-    public class Blue{
+    public static class Blue{
+        public static class Close{
+            public static class Solo{
+                public static Pose startPose = Red.Close.Solo.startPose.mirror();
+                public static Pose shootPreloadPose = Red.Close.Solo.shootPreloadPose.mirror();
+                public static Pose intakeFirstControl1 = Red.Close.Solo.intakeFirstControl1.mirror();
+                public static Pose intakeFirstPose = Red.Close.Solo.intakeFirstPose.mirror();
+                public static Pose shootFirstPose = Red.Close.Solo.shootFirstPose.mirror();
+                public static Pose intakeSecondControl1 = Red.Close.Solo.intakeSecondControl1.mirror();
+                public static Pose intakeSecondPose = Red.Close.Solo.intakeSecondPose.mirror();
+                public static Pose shootSecondControl1 = Red.Close.Solo.shootSecondControl1.mirror();
+                public static Pose shootSecondPose = Red.Close.Solo.shootSecondPose.mirror();
+            }
+            public static class Alliance{
+                public static Pose startPose = Red.Close.Alliance.startPose.mirror();
+                public static Pose shootPreloadPose = Red.Close.Alliance.shootPreloadPose.mirror();
+                public static Pose intakeSecondControl1 = Red.Close.Alliance.intakeSecondControl1.mirror();
+                public static Pose intakeSecondControl2 = Red.Close.Alliance.intakeSecondControl2.mirror();
+                public static Pose intakeSecondPose = Red.Close.Alliance.intakeSecondPose.mirror();
+                public static Pose gateControl1 = Red.Close.Alliance.gateControl1.mirror();
+                public static Pose gatePose = Red.Close.Alliance.gatePose.mirror();
+                public static Pose shootSecondControl1 = Red.Close.Alliance.shootSecondControl1.mirror();
+                public static Pose shootSecondPose = Red.Close.Alliance.shootSecondPose.mirror();
+                public static Pose intakeFirstPose = Red.Close.Alliance.intakeFirstPose.mirror();
+                public static Pose shootFirstPose = Red.Close.Alliance.shootFirstPose.mirror();
+            }
 
+        }
+        public static class Far{
+            public static class Solo{
+                public static Pose startPose = Red.Far.Solo.startPose.mirror();
+                public static Pose shootPose = Red.Far.Solo.shootPose.mirror();
+                public static Pose intakeFirstPose = Red.Far.Solo.intakeFirstPose.mirror();
+                public static Pose intakeFirstControl1 = Red.Far.Solo.intakeFirstControl1.mirror();
+                public static Pose intakeSecondPose = Red.Far.Solo.intakeSecondPose.mirror();
+                public static Pose intakeSecondControl1 = Red.Far.Solo.intakeSecondControl1.mirror();
+                public static Pose leavePose = Red.Far.Solo.leavePose.mirror();
+
+            }
+
+        }
     }
 }

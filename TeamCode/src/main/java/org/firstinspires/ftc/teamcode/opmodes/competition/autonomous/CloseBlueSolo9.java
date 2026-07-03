@@ -13,7 +13,7 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.Pose;
+
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -23,18 +23,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
-import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.*;
-
-import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
-import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Blue.Close.Solo.*;
 
 import java.util.List;
 
 @Autonomous(name = "CloseRedSolo9", group = "RED")
 @Configurable
-public class CloseRedSolo9 extends LinearOpMode {
+public class CloseBlueSolo9 extends LinearOpMode {
     private List<LynxModule> hubs;
 
     /* ================================ Subsystems ================================ */
@@ -52,7 +48,7 @@ public class CloseRedSolo9 extends LinearOpMode {
 
     public void initialize()
     {
-        alliance = Alliance.RED; // alliance for vision and localization
+        alliance = Alliance.BLUE; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap, launcher); // construct intake object
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
@@ -102,8 +98,8 @@ public class CloseRedSolo9 extends LinearOpMode {
                 sequential(
                         parallel(
                                 follow(drivetrain.follower,preLoadsPose),
-                                 launcher.runFlywheelClose()
-                                ),
+                                launcher.runFlywheelClose()
+                        ),
                         launcher.buildShootCommand(89.5),
                         waitMs(25),
                         launcher.buildShootCommand(89.5),
@@ -122,7 +118,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                                 follow(drivetrain.follower, shootClose),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
-                                ),
+                        ),
                         launcher.buildShootCommand(115),
                         waitMs(25),
                         launcher.buildShootCommand(115),
@@ -141,7 +137,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                                 follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
-                                ),
+                        ),
                         launcher.buildShootCommand(117.5),
                         waitMs(25),
                         launcher.buildShootCommand(117.5),
