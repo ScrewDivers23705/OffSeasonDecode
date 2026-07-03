@@ -8,6 +8,7 @@ import com.pedropathing.ivy.behaviors.BlockedBehavior;
 import com.pedropathing.ivy.behaviors.ConflictBehavior;
 import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.configs.pedroPathing.Constants;
@@ -19,25 +20,42 @@ import java.util.function.DoubleSupplier;
 
 public class Drivetrain{
     public final Follower follower;
+    private DcMotorEx frontLeft, frontRight, backLeft, backRight;
     private Alliance alliance;
     public Drivetrain(HardwareMap hwMap, Alliance alliance)
     {
+        frontLeft = hwMap.get(DcMotorEx.class, "left_front");
+        frontRight = hwMap.get(DcMotorEx.class, "right_front");
+        backLeft = hwMap.get(DcMotorEx.class, "left_back");
+        backRight = hwMap.get(DcMotorEx.class, "right_back");
+
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
         follower.setStartingPose(RobotConstants.DrivetrainConstants.autonEndPose);
         this.alliance = alliance;
+
     }
 
-    public void drive (double forward, double strafe, double turn, boolean fieldCentric)
+    public void drive(double forward, double strafe, double turn, boolean fieldCentric)
     {
+        double headingRadians = follower.getHeading();
+        if (alliance == Alliance.BLUE)
+            headingRadians += Math.PI;
+
         if (fieldCentric)
         {
-            double offset = getAngularOffset(); // get offset
 
-            double fieldForward = forward * Math.cos(offset) - strafe * Math.sin(offset);
-            double fieldStrafe = forward * Math.sin(offset) + strafe * Math.cos(offset);
+            double x = strafe * Math.cos(headingRadians) + forward * Math.sin(headingRadians);
+            double y = strafe * -Math.sin(headingRadians) + forward * Math.cos(headingRadians);
 
-            follower.setTeleOpDrive(fieldForward, fieldStrafe, turn, false);
+            y *= 1.1;
+
+            double denominator = Math.max(Math.abs(x) + Math.abs(y) + Math.abs(turn), 1);
+
+            frontLeft.setPower((y + x + turn) / denominator);
+            frontRight.setPower((y - x - turn)/ denominator);
+            backLeft.setPower((y - x + turn) / denominator);
+            backRight.setPower((y + x - turn) / denominator);
         }
         else
             follower.setTeleOpDrive(forward,strafe,turn,true);
@@ -47,9 +65,6 @@ public class Drivetrain{
         follower.update();
     }
 
-    private double getAngularOffset(){
-        return (alliance == Alliance.BLUE) ? 0.0 : Math.PI;
-    }
     public void setAlliance(Alliance a) {this.alliance = a;}
     /* ======================= COMMANDS =======================  */
 

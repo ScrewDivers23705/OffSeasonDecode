@@ -34,7 +34,8 @@ public class MainTeleop extends OpMode {
     private Command compactCmd;
     /* ================================ LOOPTIMES ================================ */
     private List<LynxModule> hubs;
-
+    /* ================================ GENERAL BS ================================ */
+    private boolean driveMethod = false; //False -> Robot centric, True -> Field centric
     public void init()
     {
         alliance = Alliance.RED; // alliance for vision and localization
@@ -55,7 +56,7 @@ public class MainTeleop extends OpMode {
                     () -> -gamepad1.left_stick_y,
                     () -> -gamepad1.left_stick_x,
                     () -> gamepad1.right_trigger > 0.5 ? vision.getAutoRotate() : -gamepad1.right_stick_x, // checks if right triggers is held and if so attempts to auto rotate therfore locks manual rotation
-                    () -> false
+                    () -> driveMethod
             ));
 
             intakeCmd = intake.intakeCommand(() -> gamepad2.left_trigger > 0.5, launcher);
@@ -90,6 +91,10 @@ public class MainTeleop extends OpMode {
             h.clearBulkCache();
 
         { // Driver command (lo nahag 2)
+            if (gamepad1.dpad_up)
+                driveMethod = true;
+            if (gamepad1.dpad_down)
+                driveMethod = false;
             if (gamepad1.left_trigger_pressed && !Scheduler.isScheduled(expandCmd))
                 Scheduler.schedule(expandCmd);
             if (gamepad1.left_bumper && !Scheduler.isScheduled(compactCmd))
