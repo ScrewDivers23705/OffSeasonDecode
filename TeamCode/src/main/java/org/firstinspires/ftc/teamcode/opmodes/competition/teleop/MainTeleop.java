@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.tests.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.competition.teleop;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
@@ -17,11 +17,8 @@ import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
 
 import java.util.List;
 
-@TeleOp (name="Main Test", group = "Tests")
-public class MainTest extends OpMode {
-    ElapsedTime timer = new ElapsedTime();
-    double loopTimeSum = 0;
-    double loops = 0;
+@TeleOp (name="Main", group = "comp")
+public class MainTeleop extends OpMode {
     /* ================================ subsystems ================================ */
     private Drivetrain drivetrain;
     private Launcher launcher;
@@ -92,14 +89,6 @@ public class MainTest extends OpMode {
         for (LynxModule h : hubs)
             h.clearBulkCache();
 
-
-        double loopTime = timer.seconds();
-        loopTimeSum += loopTime;
-        loops++;
-        timer.reset();
-        telemetry.addData("Loop Time (ms)",loopTime * 1000);
-        telemetry.addData("Average Loop Time (ms)",(loopTimeSum / loops)* 1000);
-
         { // Driver command (lo nahag 2)
             if (gamepad1.left_trigger_pressed && !Scheduler.isScheduled(expandCmd))
                 Scheduler.schedule(expandCmd);
@@ -135,7 +124,6 @@ public class MainTest extends OpMode {
             drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
-            comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }
