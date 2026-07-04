@@ -38,13 +38,14 @@ public class Drivetrain{
 
     public void drive(double forward, double strafe, double turn, boolean fieldCentric)
     {
-        double headingRadians = follower.getHeading();
-        if (alliance == Alliance.BLUE)
-            headingRadians += Math.PI;
+        //double headingRadians = follower.getHeading();
+        //if (alliance == Alliance.BLUE)
+        //   headingRadians += Math.PI;
 
         if (fieldCentric)
         {
-
+            follower.setTeleOpDrive(forward, strafe, turn,false, alliance == Alliance.BLUE ? Math.toRadians(180) : 0);
+            /*
             double x = strafe * Math.cos(headingRadians) + forward * Math.sin(headingRadians);
             double y = strafe * -Math.sin(headingRadians) + forward * Math.cos(headingRadians);
 
@@ -56,6 +57,7 @@ public class Drivetrain{
             frontRight.setPower((y - x - turn)/ denominator);
             backLeft.setPower((y - x + turn) / denominator);
             backRight.setPower((y + x - turn) / denominator);
+            */
         }
         else
             follower.setTeleOpDrive(forward,strafe,turn,true);

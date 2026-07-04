@@ -30,7 +30,7 @@ import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.
 
 import java.util.List;
 
-@Autonomous(name = "CloseRedSolo9", group = "RED")
+@Autonomous(name = "CloseRedAlliance9", group = "RED")
 @Configurable
 public class CloseRedAlliance9 extends LinearOpMode {
     private List<LynxModule> hubs;

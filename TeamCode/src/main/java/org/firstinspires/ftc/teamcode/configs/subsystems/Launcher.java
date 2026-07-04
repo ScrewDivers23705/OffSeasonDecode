@@ -152,19 +152,22 @@ public class Launcher{
         return sequential(
                 instant(() -> targetRPM = 2300),
                 instant(() -> active = true)
-        );
+        )
+        .requiring(this);
     }
     public Command runFlywheelMid(){
         return sequential(
                 instant(() -> targetRPM = 2800),
                 instant(() -> active = true)
-        );
+        )
+        .requiring(this);
     }
     public Command runFlywheelFar(){
         return sequential(
                 instant(() -> targetRPM = 3600),
                 instant(() -> active = true)
-        );
+        )
+        .requiring(this);
     }
     public Command buildShootCommand(double distance)
     {
@@ -198,7 +201,10 @@ public class Launcher{
                 isBusy = false; // set as not busy and free to use
                 targetRPM = 0;
             })
-        );
+        )
+        .requiring(this)
+        .requiring(intake);
+
     }
     public Command shootAutonCommand(double distance, double feedTime)
     {
@@ -273,7 +279,9 @@ public class Launcher{
                     isBusy = false; // set as not busy and free to use
                     targetRPM = 0;
                 })
-        );
+        )
+                .requiring(this)
+                .requiring(intake);
     }
 
 

@@ -29,7 +29,7 @@ import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Blue.Far.S
 
 import java.util.List;
 
-@Autonomous(name = "FarRedSolo9", group = "RED")
+@Autonomous(name = "FarBlueSolo9", group = "BLUE")
 @Configurable
 public class FarBlueSolo9 extends LinearOpMode {
     private List<LynxModule> hubs;
