@@ -13,7 +13,6 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -74,12 +73,16 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPreloadPose.getHeading())
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(shootPreloadPose, intakeSecondControl1, intakeSecondControl2, intakeSecondPose))
+                .addPath(new BezierCurve(shootPreloadPose,intakeSecondControl1,intakeSecondControl2, intakeSecondPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setTValueConstraint(0.85)
+                .setTimeoutConstraint(250)
                 .build();
         openGate = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose, gateControl1, gatePose))
                 .setConstantHeadingInterpolation(gatePose.getHeading())
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(500)
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(gatePose, shootSecondControl1, shootSecondPose))
@@ -88,9 +91,9 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .build();
         intakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
-                .setTValueConstraint(0.85)
-                .setTimeoutConstraint(500)
-                .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
+                .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setTValueConstraint(0.75)
+                .setTimeoutConstraint(300)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -114,14 +117,15 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower, intakeFirst,true,0.5),
+                        follow(drivetrain.follower, intakeSecond,true,0.5),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
                         intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
-                        follow(drivetrain.follower, openGate, true, 0.8),
+                        follow(drivetrain.follower, openGate, true, 0.9),
+                        waitMs(250),
                         parallel(
                                 follow(drivetrain.follower, shootSecond),
                                 launcher.runFlywheelMid(),
@@ -134,7 +138,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         launcher.buildShootCommand(152),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower, intakeSecond,true,0.5),
+                        follow(drivetrain.follower, intakeFirst,true,0.35),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
@@ -164,6 +168,10 @@ public class CloseRedAlliance9 extends LinearOpMode {
         buildCommands();
         while (opModeIsActive()) {
             for (LynxModule h : hubs) h.clearBulkCache();
+            telemetry.addData("IDK", drivetrain.follower.getCurrentTValue());
+            telemetry.addData("POS", drivetrain.follower.getPose());
+            telemetry.addData("HEADING", drivetrain.follower.getHeading());
+            telemetry.update();
             drivetrain.periodic();
             launcher.periodic();
             Scheduler.execute();
