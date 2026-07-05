@@ -32,6 +32,7 @@ public class Drivetrain{
         follower = Constants.createFollower(hwMap);
         follower.startTeleopDrive();
         follower.setStartingPose(RobotConstants.DrivetrainConstants.autonEndPose);
+        follower.setPose(RobotConstants.DrivetrainConstants.autonEndPose);
         this.alliance = alliance;
 
     }

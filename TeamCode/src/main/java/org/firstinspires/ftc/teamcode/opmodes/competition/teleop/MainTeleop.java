@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.opmodes.competition.teleop;
 
+
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.configs.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Intake;
@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.configs.subsystems.Kicker;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.configs.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotConstants.DrivetrainConstants.autonEndPose;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
 
 import java.util.List;
@@ -38,6 +39,8 @@ public class MainTeleop extends OpMode {
     private boolean driveMethod = false; //False -> Robot centric, True -> Field centric
     public void init()
     {
+        telemetry.addData("autonEndPose at teleop init", autonEndPose);
+        telemetry.update();
         alliance = Alliance.RED; // alliance for vision and localization
         drivetrain = new Drivetrain(hardwareMap, alliance); // construct drivetrain object
         intake = new Intake(hardwareMap); // construct intake object
