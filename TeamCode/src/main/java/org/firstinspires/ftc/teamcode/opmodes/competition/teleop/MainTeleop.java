@@ -129,6 +129,7 @@ public class MainTeleop extends OpMode {
             drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
+            comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }

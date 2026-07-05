@@ -10,7 +10,7 @@ public class RobotConstants {
         public static final Pose BLUE_START_FAR_POSE = new Pose(62,8.2, Math.toRadians(90));
         public static final Pose RED_START_CLOSE_POSE = new Pose(127.5,107.5,Math.toRadians(90));
         public static final Pose RED_START_FAR_POSE = new Pose(86.28,8.5,Math.toRadians(90));
-        public static Pose autonEndPose = new Pose(127.5,107.5,Math.toRadians(90));
+        public static Pose autonEndPose = new Pose(127.5,107.5,Math.toRadians(82));
 
     }
     @Configurable
@@ -45,7 +45,7 @@ public class RobotConstants {
     }
 
     public static class IntakeConstants { // constants for intake
-        public static final double CLOSE_POS = 1.0; // gate pos to stop artifacts
+        public static final double CLOSE_POS = 0.7; // gate pos to stop artifacts //0.575
         public static final double OPEN_POS = 0.0; // gate pos to let artifacts go through
         public static final double FORWARD_POWER = -1.0; // max intake speed
         public static final double REVERSE_POWER = 1.0; // max revers intake speed

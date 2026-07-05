@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.configs.subsystems;
 
 import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.ivy.Command;
@@ -30,10 +31,11 @@ public class Intake {
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         gate = hwMap.get(Servo.class, "gate");
     }
-    public void enable()
+    public void enable(Launcher launcher)
     {
         intake.setPower(RobotConstants.IntakeConstants.FORWARD_POWER);
         gate.setPosition(RobotConstants.IntakeConstants.CLOSE_POS);
+        launcher.reverseFeeders();
         state = 1;
     }
     public void feed()
@@ -86,14 +88,11 @@ public class Intake {
 
     public Command intakeCommand(BooleanSupplier isHeld, Launcher launcher) {
         return Command.build()
-                .setStart(() -> {
-                    this.enable();
-                    launcher.runFeeders(); // Control feeders safely through the launcher
-                })
+                .setStart(() -> enable(launcher))
                 .setDone(() -> !isHeld.getAsBoolean())
                 .setEnd(endCondition -> {
                     this.disable();
-                    launcher.stopFeeders();
+
                 })
                 .requiring(this)
                 .requiring(launcher) // <--- THIS IS HOW YOU ADD MULTIPLE REQUIREMENTS
@@ -104,12 +103,10 @@ public class Intake {
         return Command.build()
                 .setStart(() -> {
                     this.reverse();
-                    launcher.runFeeders(); // Run feeders backward or forward depending on preference
                 })
                 .setDone(() -> !isHeld.getAsBoolean())
                 .setEnd(endCondition -> {
                     this.disable();
-                    launcher.stopFeeders();
                 })
                 .requiring(this)
                 .requiring(launcher) // Locks out the launcher here too
@@ -119,8 +116,8 @@ public class Intake {
     public Command intakeCommandAuton(Launcher launcher)
     {
         return sequential(
-                instant(this::enable),
-                instant(launcher::runFeeders)
+                instant(() -> enable(launcher)),
+                instant(launcher::reverseFeeders)
         );
     }
     public Command disableIntakeCommandAuton()

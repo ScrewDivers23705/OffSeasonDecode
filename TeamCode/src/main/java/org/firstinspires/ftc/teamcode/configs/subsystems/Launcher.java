@@ -71,7 +71,7 @@ public class Launcher{
     public boolean isReady() {return active && targetRPM > 50 && Math.abs(targetRPM - currentRPM) < ShooterConstants.RPM_TOLERANCE && Math.abs(targetRPM - lastRPM) < ShooterConstants.RPM_TOLERANCE;}
     public void runFeeders()
     {
-        leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
+        leftFeeder.setPower(ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(ShooterConstants.FULL_SPEED);
         intake.feed();
         isFeeding = true;
@@ -79,8 +79,9 @@ public class Launcher{
     public void stopFeeders()
     {
         intake.disable();
-        leftFeeder.setPower(ShooterConstants.FULL_SPEED);
+        leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
         rightFeeder.setPower(-ShooterConstants.FULL_SPEED);
+
         isFeeding = false;
     }
     public boolean isBusy() {return isBusy;}
@@ -146,28 +147,33 @@ public class Launcher{
         );
     }
     public Command stopFlywheel(){
-        return parallel(instant(() -> active = false), instant(() -> targetRPM = 0));
+        return sequential(
+                instant(() -> active = false),
+                instant(() -> targetRPM = 0),
+                instant(() -> isBusy = false)
+        );
     }
     public Command runFlywheelClose(){
         return sequential(
                 instant(() -> targetRPM = 2300),
                 instant(() -> active = true)
-        )
-        .requiring(this);
+        );
     }
     public Command runFlywheelMid(){
         return sequential(
                 instant(() -> targetRPM = 2800),
                 instant(() -> active = true)
-        )
-        .requiring(this);
+        );
     }
     public Command runFlywheelFar(){
         return sequential(
                 instant(() -> targetRPM = 3600),
                 instant(() -> active = true)
-        )
-        .requiring(this);
+        );
+    }
+    public void reverseFeeders(){
+        leftFeeder.setPower(-ShooterConstants.FULL_SPEED);
+        rightFeeder.setPower(-ShooterConstants.FULL_SPEED);
     }
     public Command buildShootCommand(double distance)
     {
