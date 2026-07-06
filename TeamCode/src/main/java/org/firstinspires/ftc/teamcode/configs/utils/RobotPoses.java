@@ -29,7 +29,7 @@ public class RobotPoses {
                 public static Pose intakeSecondControl2 = new Pose(102,58.5);
                 public static Pose intakeSecondPose = new Pose(131, 55, Math.toRadians(-2));
                 public static Pose gateControl1 = new Pose(110,62);
-                public static Pose gatePose = new Pose(129,56,Math.toRadians(-13));
+                public static Pose gatePose = new Pose(128,56,Math.toRadians(-13));
                 public static Pose shootSecondControl1 = new Pose(97.6, 61);
                 public static Pose shootSecondPose = new Pose(90, 82, Math.toRadians(50));
                 public static Pose intakeFirstPose = new Pose(126, 81,Math.toRadians(-1));
@@ -39,7 +39,7 @@ public class RobotPoses {
         public static class Far{
             public static class Solo{
                 public static Pose startPose = RobotConstants.DrivetrainConstants.RED_START_FAR_POSE;
-                public static Pose shootPose = new Pose(84,18,Math.toRadians(63.5));
+                public static Pose shootPose = new Pose(84,18,Math.toRadians(65));
                 public static Pose intakeFirstPose = new Pose(133.5, 34.8, Math.toRadians(0));
                 public static Pose intakeFirstControl1 = new Pose(82.5,37.5);
                 public static Pose intakeSecondPose = new Pose(131.4, 14.5, Math.toRadians(-20));

@@ -33,12 +33,12 @@ public class RobotConstants {
             lookUpTable.add(89.5, 0.0435, 2600); // 13V // TODO keep working on LUT
             lookUpTable.add(102, 0.0535,2675); // 12.5V
             lookUpTable.add(120, 0.06,2750); // 12.35v
-            lookUpTable.add(146, 0.05,2865); // 12.93V
-            lookUpTable.add(158, 0.0545, 2985); // 13V
-            lookUpTable.add(194, 0.06, 3250); // 13V
+            lookUpTable.add(145, 0.06195,2950); // 12.93V //TODO
+            lookUpTable.add(159, 0.065, 3100); // 13V
+            lookUpTable.add(194, 0.07, 3225); // 13V //TODO
             lookUpTable.add(210, 0.077, 3425); // 13.5V
             lookUpTable.add(231, 0.08, 3605); // 13.5V
-            lookUpTable.add(276, 0.08, 3755);
+            lookUpTable.add(276, 0.08, 3760);
             lookUpTable.add(294, 0.086, 3875); // 13.2V
             return lookUpTable;
         }

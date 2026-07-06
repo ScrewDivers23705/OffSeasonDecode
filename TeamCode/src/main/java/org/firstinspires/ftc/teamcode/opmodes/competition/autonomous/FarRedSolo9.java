@@ -76,24 +76,25 @@ public class FarRedSolo9 extends LinearOpMode {
         intakeClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootPose, intakeFirstControl1, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
-                .setTValueConstraint(0.95)
+                .setTValueConstraint(0.85)
                 .setTimeoutConstraint(500)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootPose))
                 .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootPose.getHeading() + Math.toRadians(1))
-                .setTValueConstraint(0.98)
+                .setTValueConstraint(500)
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootPose,intakeSecondControl1,intakeSecondPose))
-                .setTValueConstraint(0.95)
-                .setTimeoutConstraint(250)
+                .setTValueConstraint(0.85)
+                .setTimeoutConstraint(500)
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeSecondPose,shootPose))
                 .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootPose.getHeading() + Math.toRadians(2))
-                .setTValueConstraint(0.98)
+                .setTValueConstraint(0.99)
+                .setTimeoutConstraint(500)
                 .build();
         leave = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootPose,leavePose))
@@ -108,9 +109,11 @@ public class FarRedSolo9 extends LinearOpMode {
                                 follow(drivetrain.follower,shootPreLoad),
                                 launcher.runFlywheelFar()
                         ),
-                        launcher.shootAutonCommand(275, 533),
-                        launcher.shootAutonCommand(275, 433),
-                        launcher.shootAutonCommand(275, 433),
+                        launcher.shootAutonCommand(270, 533),
+                        waitMs(30),
+                        launcher.shootAutonCommand(270, 433),
+                        waitMs(30),
+                        launcher.shootAutonCommand(270, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeClose,true,0.6),
@@ -120,12 +123,14 @@ public class FarRedSolo9 extends LinearOpMode {
                         intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         parallel(
-                                follow(drivetrain.follower, shootFirst),
+                                follow(drivetrain.follower, shootFirst, true, 0.9),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
                         launcher.shootAutonCommand(275, 533),
+                        waitMs(30),
                         launcher.shootAutonCommand(275, 433),
+                        waitMs(30),
                         launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -134,12 +139,14 @@ public class FarRedSolo9 extends LinearOpMode {
                         //follow(drivetrain.follower, shakeSecond, true, 0.7),
                         intake.disableIntakeCommandAuton(),
                         parallel(
-                                follow(drivetrain.follower, shootSecond),
+                                follow(drivetrain.follower, shootSecond, true, 0.9),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
                         launcher.shootAutonCommand(275, 533),
+                        waitMs(30),
                         launcher.shootAutonCommand(275, 433),
+                        waitMs(30),
                         launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
                         follow(drivetrain.follower,leave)

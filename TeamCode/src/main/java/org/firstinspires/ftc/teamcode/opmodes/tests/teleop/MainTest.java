@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.tests.teleop;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -16,8 +17,8 @@ import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.TelemetryUtils;
 
 import java.util.List;
-
-@TeleOp (name="Main Test", group = "Tests")
+@Disabled
+@TeleOp (name="Man Test", group = "Tests")
 public class MainTest extends OpMode {
     ElapsedTime timer = new ElapsedTime();
     double loopTimeSum = 0;

@@ -74,26 +74,26 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootPreloadPose,intakeSecondControl1,intakeSecondControl2, intakeSecondPose))
-                .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
                 .setTValueConstraint(0.85)
-                .setTimeoutConstraint(250)
+                .setTimeoutConstraint(350)
                 .build();
         openGate = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose, gateControl1, gatePose))
                 .setConstantHeadingInterpolation(gatePose.getHeading())
-                .setTValueConstraint(0.95)
-                .setTimeoutConstraint(500)
+                .setTValueConstraint(0.9)
+                .setTimeoutConstraint(600)
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(gatePose, shootSecondControl1, shootSecondPose))
-                .setLinearHeadingInterpolation(gatePose.getHeading(),shootSecondPose.getHeading())
+                .addPath(new BezierCurve(drivetrain.follower.getPose(), shootSecondControl1, shootSecondPose))
+                .setLinearHeadingInterpolation(drivetrain.follower.getHeading(),shootSecondPose.getHeading())
                 .setTValueConstraint(0.995)
                 .build();
         intakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
-                .setTValueConstraint(0.75)
-                .setTimeoutConstraint(300)
+                .setTValueConstraint(0.7)
+                .setTimeoutConstraint(500)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -127,7 +127,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         follow(drivetrain.follower, openGate, true, 0.9),
                         waitMs(250),
                         parallel(
-                                follow(drivetrain.follower, shootSecond),
+                                follow(drivetrain.follower, shootSecond,true, 0.95),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
@@ -150,11 +150,11 @@ public class CloseRedAlliance9 extends LinearOpMode {
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
-                        launcher.buildShootCommand(130),
+                        launcher.buildShootCommand(131),
                         waitMs(25),
-                        launcher.buildShootCommand(130),
+                        launcher.buildShootCommand(131),
                         waitMs(25),
-                        launcher.buildShootCommand(130), //TODO check for acutal distance
+                        launcher.buildShootCommand(131), //TODO check for acutal distance
                         instant(launcher::disable)
                 )
         );
@@ -168,6 +168,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
         buildCommands();
         while (opModeIsActive()) {
             for (LynxModule h : hubs) h.clearBulkCache();
+            telemetry.addData("PATH", drivetrain.follower.getCurrentPath());
             telemetry.addData("IDK", drivetrain.follower.getCurrentTValue());
             telemetry.addData("POS", drivetrain.follower.getPose());
             telemetry.addData("HEADING", drivetrain.follower.getHeading());

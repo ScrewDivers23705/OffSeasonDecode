@@ -203,9 +203,9 @@ public class Launcher{
 
             instant(() -> {
                 this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                active = false; // turns off the shooters
+                //active = false; // turns off the shooters
                 isBusy = false; // set as not busy and free to use
-                targetRPM = 0;
+                //targetRPM = 0;
             })
         )
         .requiring(this)
