@@ -26,7 +26,7 @@ public class MainTeleop extends OpMode {
     private Intake intake;
     private Vision vision;
     private Kicker kicker;
-    private TelemetryUtils comms;
+    //private TelemetryUtils comms;
     private Alliance alliance;
     /* ================================ COMMANDS ================================ */
     private Command intakeCmd;
@@ -47,7 +47,7 @@ public class MainTeleop extends OpMode {
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
-        comms = new TelemetryUtils(telemetry,drivetrain,launcher,vision,intake);
+        //comms = new TelemetryUtils(telemetry,drivetrain,launcher,vision,intake);
 
         hubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule h : hubs)
@@ -132,7 +132,7 @@ public class MainTeleop extends OpMode {
             drivetrain.periodic();
             launcher.periodic();
             vision.periodic();
-            comms.periodic();
+            //comms.periodic();
 
             Scheduler.execute(); //run everything scheduled
         }
@@ -140,7 +140,7 @@ public class MainTeleop extends OpMode {
 
     public void stop()
     {
-        comms.stopCameraStream();
+        //comms.stopCameraStream();
         Scheduler.reset();
     }
 

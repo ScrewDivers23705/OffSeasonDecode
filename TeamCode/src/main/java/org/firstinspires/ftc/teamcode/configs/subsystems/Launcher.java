@@ -268,15 +268,21 @@ public class Launcher{
                 waitUntil(this::isReady), // wait until flywheel is in correct speed
 
                 instant(this::runFeeders), // start feeding artifacts for flywheel
-                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.35), // wait until artifact completely passed through
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completely passed through
                 instant(this::stopFeeders),
-                waitMs(750),
+                instant(intake::reverseMotor),
+                waitMs(125),
+                instant(intake::disable),
+                waitMs(200),
                 instant(this::runFeeders), // start feeding artifacts for flywheel
-                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.2), // wait until artifact completely passed through
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completely passed through
                 instant(this::stopFeeders),
-                waitMs(750),
+                instant(intake::reverseMotor),
+                waitMs(125),
+                instant(intake::disable),
+                waitMs(200),
                 instant(this::runFeeders), // start feeding artifacts for flywheel
-                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS * 1.1), // wait until artifact completely passed through
+                waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completely passed through
 
 
 

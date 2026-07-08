@@ -27,15 +27,6 @@ import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Blue.Close.Solo.*;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeFirstControl1;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeFirstPose;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeSecondControl1;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeSecondPose;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootFirstPose;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootPreloadPose;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootSecondControl1;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootSecondPose;
-import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.startPose;
 
 import java.util.List;
 
