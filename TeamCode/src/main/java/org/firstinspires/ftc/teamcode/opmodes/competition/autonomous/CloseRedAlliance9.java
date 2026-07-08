@@ -92,8 +92,8 @@ public class CloseRedAlliance9 extends LinearOpMode {
         intakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
-                .setTValueConstraint(0.75)
-                .setTimeoutConstraint(600)
+                .setTValueConstraint(0.7)
+                .setTimeoutConstraint(800)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -111,9 +111,11 @@ public class CloseRedAlliance9 extends LinearOpMode {
                                 launcher.runFlywheelClose()
                         ),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(89.5),
+                        waitMs(35),
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -125,16 +127,18 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
                         follow(drivetrain.follower, openGate, true, 1),
-                        waitMs(750),
+                        waitMs(1000),
                         parallel(
                                 follow(drivetrain.follower, shootSecond,true, 0.95),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
                         launcher.buildShootCommand(152),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(152),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(152),
+                        waitMs(35),
                         launcher.buildShootCommand(152),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -150,11 +154,15 @@ public class CloseRedAlliance9 extends LinearOpMode {
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
-                        launcher.buildShootCommand(131),
-                        waitMs(25),
-                        launcher.buildShootCommand(131),
-                        waitMs(25),
-                        launcher.buildShootCommand(131), //TODO check for acutal distance
+                        launcher.buildShootCommand(127),
+                        waitMs(35),
+                        launcher.buildShootCommand(127),
+                        waitMs(35),
+                        launcher.buildShootCommand(127), //TODO check for acutal distance
+                        waitMs(35),
+                        launcher.buildShootCommand(127),
+                        waitMs(35),
+                        launcher.buildShootCommand(127),
                         instant(launcher::disable)
                 )
         );

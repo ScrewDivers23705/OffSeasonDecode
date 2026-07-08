@@ -63,7 +63,7 @@ public class Intake {
     }
     public void reverseMotor()
     {
-        intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER);
+        intake.setPower(RobotConstants.IntakeConstants.REVERSE_POWER / 1.33);
         gate.setPosition(RobotConstants.IntakeConstants.OPEN_POS);
         state = -1;
     }

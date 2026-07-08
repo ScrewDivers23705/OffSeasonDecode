@@ -107,9 +107,10 @@ public class CloseRedSolo9 extends LinearOpMode {
                                  launcher.runFlywheelClose()
                                 ),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(89.5),
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -126,9 +127,10 @@ public class CloseRedSolo9 extends LinearOpMode {
                                 ),
                         intake.disableIntakeCommandAuton(),
                         launcher.buildShootCommand(115),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(115),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(115),
                         launcher.buildShootCommand(115),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -148,6 +150,7 @@ public class CloseRedSolo9 extends LinearOpMode {
                         waitMs(25),
                         launcher.buildShootCommand(117.5),
                         waitMs(25),
+                        launcher.buildShootCommand(117.5),
                         launcher.buildShootCommand(117.5),
                         instant(launcher::disable)
                 )

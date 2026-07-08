@@ -15,7 +15,7 @@ public class RobotPoses {
                 public static Pose startPose = RobotConstants.DrivetrainConstants.RED_START_CLOSE_POSE;
                 public static Pose shootPreloadPose = new Pose(101,100,Math.toRadians(42));
                 public static Pose intakeFirstControl1 = new Pose(45, 80);
-                public static Pose intakeFirstPose = new Pose(127, 80,Math.toRadians(2));
+                public static Pose intakeFirstPose = new Pose(127, 80,Math.toRadians(-1));
                 public static Pose shootFirstPose = new Pose(95.000, 90.000, Math.toRadians(45.5));
                 public static Pose intakeSecondControl1 = new Pose(81.407, 49.968);
                 public static Pose intakeSecondPose = new Pose(131.5, 53.75, Math.toRadians(-3));
@@ -32,7 +32,7 @@ public class RobotPoses {
                 public static Pose gatePose = new Pose(127,57 ,Math.toRadians(-10));
                 public static Pose shootSecondControl1 = new Pose(97.6, 61);
                 public static Pose shootSecondPose = new Pose(90, 82, Math.toRadians(50));
-                public static Pose intakeFirstPose = new Pose(124, 81,Math.toRadians(-1));
+                public static Pose intakeFirstPose = new Pose(125.5, 79.5,Math.toRadians(0));
                 public static Pose shootFirstPose = new Pose(84.5,102,32);
             }
         }

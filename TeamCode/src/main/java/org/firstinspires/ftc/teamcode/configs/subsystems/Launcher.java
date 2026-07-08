@@ -193,7 +193,7 @@ public class Launcher{
                         })
                 ),
             instant(() -> {intake.reverseMotor();}),
-            waitMs(75),
+            waitMs(125),
             instant(() -> intake.disable()),
 
             waitUntil(this::isReady), // wait until flywheel is in correct speed
@@ -231,7 +231,7 @@ public class Launcher{
                         })
                 ),
                 instant(() -> {intake.reverseMotor();}),
-                waitMs(95),
+                waitMs(125),
                 instant(() -> intake.disable()),
 
                 waitUntil(this::isReady), // wait until flywheel is in correct speed

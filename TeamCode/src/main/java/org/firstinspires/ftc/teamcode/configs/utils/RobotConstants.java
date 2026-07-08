@@ -20,7 +20,7 @@ public class RobotConstants {
         public static final  double STOP_SPEED = 0.0; // cr servo stop
         public static final double FULL_SPEED = 0.7; // cr servo speed
         public static final double RPM_TOLERANCE = 30.0;
-        public static  double kP = 0.0007;     // launcher kP //TODO tune kp
+        public static  double kP = 0.00175;     // launcher kP //TODO tune kp
         public static  double kS = 0.03456; // launcher kS //TODO tune, check when motor starts moving
         public static  double kV = 0.00015; // launcher kA // TODO tune, check when vel=targetvel without any kp
         public static double TESTRPM = 0;
@@ -53,8 +53,8 @@ public class RobotConstants {
 
     public static class VisionConstants { // constants for vison
         public static final double kP = 0.0175     ; // drivetrain kp for rotation
-        public static final double RED_GOAL_OFFSET = -3; // offset for
-        public static final double BLUE_GOAL_OFFSET = -7; //todo make sure
+        public static final double RED_GOAL_OFFSET = -6; // offset for
+        public static final double BLUE_GOAL_OFFSET = -7;
         public static final int RED_ID = 24;
         public static final int BLUE_ID = 20;
         public static final double OFFSET_TOLERANCE = 1.5;
