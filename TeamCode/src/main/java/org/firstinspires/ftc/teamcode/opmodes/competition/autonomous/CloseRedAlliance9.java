@@ -97,7 +97,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
-                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootFirstPose.getHeading() + Math.toRadians(1))
+                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(), shootFirstPose.getHeading() + Math.toRadians(1))
                 .setTValueConstraint(0.98)
                 .setTimeoutConstraint(250)
                 .build();
@@ -158,7 +158,7 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         waitMs(35),
                         launcher.buildShootCommand(127),
                         waitMs(35),
-                        launcher.buildShootCommand(127), //TODO check for acutal distance
+                        launcher.buildShootCommand(127),
                         waitMs(35),
                         launcher.buildShootCommand(127),
                         waitMs(35),
@@ -176,11 +176,6 @@ public class CloseRedAlliance9 extends LinearOpMode {
         buildCommands();
         while (opModeIsActive()) {
             for (LynxModule h : hubs) h.clearBulkCache();
-            telemetry.addData("PATH", drivetrain.follower.getCurrentPath());
-            telemetry.addData("IDK", drivetrain.follower.getCurrentTValue());
-            telemetry.addData("POS", drivetrain.follower.getPose());
-            telemetry.addData("HEADING", drivetrain.follower.getHeading());
-            telemetry.update();
             drivetrain.periodic();
             launcher.periodic();
             Scheduler.execute();

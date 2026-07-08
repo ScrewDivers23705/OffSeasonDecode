@@ -167,9 +167,8 @@ public class CloseRedSolo9 extends LinearOpMode {
             for (LynxModule h : hubs) h.clearBulkCache();
             drivetrain.periodic();
             launcher.periodic();
-            RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();   ;
             Scheduler.execute();
         }
-
+        RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();
     }
 }

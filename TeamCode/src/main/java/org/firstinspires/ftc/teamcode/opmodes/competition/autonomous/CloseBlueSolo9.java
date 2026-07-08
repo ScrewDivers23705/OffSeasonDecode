@@ -80,7 +80,7 @@ public class CloseBlueSolo9 extends LinearOpMode {
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
-                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading() + Math.toRadians(2))
+                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootFirstPose.getHeading() - Math.toRadians(2))
                 .setTValueConstraint(0.925)
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
@@ -91,7 +91,7 @@ public class CloseBlueSolo9 extends LinearOpMode {
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose,shootSecondControl1,shootSecondPose))
-                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading() + Math.toRadians(1))
+                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootSecondPose.getHeading() - Math.toRadians(1))
                 .setTValueConstraint(0.98)
                 .setTimeoutConstraint(150)
                 .build();
@@ -105,9 +105,10 @@ public class CloseBlueSolo9 extends LinearOpMode {
                                 launcher.runFlywheelClose()
                         ),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(89.5),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(89.5),
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -124,9 +125,10 @@ public class CloseBlueSolo9 extends LinearOpMode {
                         ),
                         intake.disableIntakeCommandAuton(),
                         launcher.buildShootCommand(115),
-                        waitMs(25),
+                        waitMs(35),
                         launcher.buildShootCommand(115),
-                        waitMs(25),
+                        waitMs(35),
+                        launcher.buildShootCommand(115),
                         launcher.buildShootCommand(115),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -147,11 +149,11 @@ public class CloseBlueSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(117.5),
                         waitMs(25),
                         launcher.buildShootCommand(117.5),
+                        launcher.buildShootCommand(117.5),
                         instant(launcher::disable)
                 )
         );
     }
-
 
     public void runOpMode() {
 
@@ -163,9 +165,8 @@ public class CloseBlueSolo9 extends LinearOpMode {
             for (LynxModule h : hubs) h.clearBulkCache();
             drivetrain.periodic();
             launcher.periodic();
-            RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();   ;
             Scheduler.execute();
         }
-
+        RobotConstants.DrivetrainConstants.autonEndPose = drivetrain.follower.getPose();
     }
 }

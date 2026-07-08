@@ -45,8 +45,6 @@ public class FarRedSolo9 extends LinearOpMode {
     private PathChain shootPreLoad;
     private PathChain intakeClose;
     private PathChain shootFirst;
-    private PathChain intakeSecond;
-    private PathChain shootSecond;
     private PathChain leave;
 
     public void initialize()
@@ -82,18 +80,7 @@ public class FarRedSolo9 extends LinearOpMode {
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootPose))
                 .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootPose.getHeading() + Math.toRadians(1))
-                .setTValueConstraint(500)
-                .build();
-        intakeSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierCurve(shootPose,intakeSecondControl1,intakeSecondPose))
-                .setTValueConstraint(0.85)
-                .setTimeoutConstraint(500)
-                .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
-                .build();
-        shootSecond = drivetrain.follower.pathBuilder()
-                .addPath(new BezierLine(intakeSecondPose,shootPose))
-                .setLinearHeadingInterpolation(intakeSecondPose.getHeading(), shootPose.getHeading() + Math.toRadians(2))
-                .setTValueConstraint(0.99)
+                .setTValueConstraint(0.98)
                 .setTimeoutConstraint(500)
                 .build();
         leave = drivetrain.follower.pathBuilder()

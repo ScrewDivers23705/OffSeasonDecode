@@ -33,7 +33,7 @@ public class RobotPoses {
                 public static Pose shootSecondControl1 = new Pose(97.6, 61);
                 public static Pose shootSecondPose = new Pose(90, 82, Math.toRadians(50));
                 public static Pose intakeFirstPose = new Pose(125.5, 79.5,Math.toRadians(0));
-                public static Pose shootFirstPose = new Pose(84.5,102,32);
+                public static Pose shootFirstPose = new Pose(84.5,102,Math.toRadians(32));
             }
         }
         public static class Far{
