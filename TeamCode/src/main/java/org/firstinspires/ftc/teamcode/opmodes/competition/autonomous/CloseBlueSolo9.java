@@ -27,6 +27,15 @@ import org.firstinspires.ftc.teamcode.configs.utils.Alliance;
 import org.firstinspires.ftc.teamcode.configs.utils.RobotConstants;
 
 import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Blue.Close.Solo.*;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeFirstControl1;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeFirstPose;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeSecondControl1;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.intakeSecondPose;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootFirstPose;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootPreloadPose;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootSecondControl1;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.shootSecondPose;
+import static org.firstinspires.ftc.teamcode.configs.utils.RobotPoses.Red.Close.Solo.startPose;
 
 import java.util.List;
 
@@ -75,6 +84,8 @@ public class CloseBlueSolo9 extends LinearOpMode {
         intakeClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstControl1 ,intakeFirstControl1, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(300)
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -109,18 +120,18 @@ public class CloseBlueSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower,intakeClose,true,0.5),
-                        waitMs(350),
+                        follow(drivetrain.follower,intakeClose,true,0.4),
+                        waitMs(650),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
                         intake.intakeCommandAuton(launcher),
                         waitMs(300),
-                        intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootClose),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
+                        intake.disableIntakeCommandAuton(),
                         launcher.buildShootCommand(115),
                         waitMs(25),
                         launcher.buildShootCommand(115),
@@ -128,8 +139,8 @@ public class CloseBlueSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(115),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower,intakeSecond,true,0.5),
-                        waitMs(350),
+                        follow(drivetrain.follower,intakeSecond,true,0.4),
+                        waitMs(650),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
                         intake.intakeCommandAuton(launcher),
@@ -149,6 +160,7 @@ public class CloseBlueSolo9 extends LinearOpMode {
                 )
         );
     }
+
 
     public void runOpMode() {
 

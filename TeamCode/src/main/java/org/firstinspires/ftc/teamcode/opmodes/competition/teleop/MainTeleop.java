@@ -47,7 +47,7 @@ public class MainTeleop extends OpMode {
         launcher = new Launcher(hardwareMap, intake); // construct the launcher object
         vision = new Vision(hardwareMap, alliance); // construct the camera object
         kicker = new Kicker(hardwareMap); // construct the kicker object
-        comms = new TelemetryUtils(telemetry, drivetrain,launcher,vision,intake); // construct the telemtryutils object sending it all the data
+        comms = new TelemetryUtils(telemetry,drivetrain,launcher,vision,intake);
 
         hubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule h : hubs)
@@ -79,7 +79,7 @@ public class MainTeleop extends OpMode {
             drivetrain.setAlliance(alliance); // construct drivetrain object
             vision.setAlliance(alliance); // construct the camera object
         }
-        if (gamepad2.dpad_up) {
+        if (gamepad1.dpad_up) {
             alliance = Alliance.BLUE;
             drivetrain.setAlliance(alliance); // construct drivetrain object
             vision.setAlliance(alliance); // construct the camera object

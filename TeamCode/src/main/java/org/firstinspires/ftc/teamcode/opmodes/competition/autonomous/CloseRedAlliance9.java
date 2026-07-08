@@ -75,14 +75,14 @@ public class CloseRedAlliance9 extends LinearOpMode {
         intakeSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(shootPreloadPose,intakeSecondControl1,intakeSecondControl2, intakeSecondPose))
                 .setConstantHeadingInterpolation(intakeSecondPose.getHeading())
-                .setTValueConstraint(0.85)
-                .setTimeoutConstraint(350)
+                .setTValueConstraint(0.8)
+                .setTimeoutConstraint(600)
                 .build();
         openGate = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose, gateControl1, gatePose))
                 .setConstantHeadingInterpolation(gatePose.getHeading())
-                .setTValueConstraint(0.9)
-                .setTimeoutConstraint(600)
+                .setTValueConstraint(0.87)
+                .setTimeoutConstraint(1000)
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(drivetrain.follower.getPose(), shootSecondControl1, shootSecondPose))
@@ -92,8 +92,8 @@ public class CloseRedAlliance9 extends LinearOpMode {
         intakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
-                .setTValueConstraint(0.7)
-                .setTimeoutConstraint(500)
+                .setTValueConstraint(0.75)
+                .setTimeoutConstraint(600)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -117,15 +117,15 @@ public class CloseRedAlliance9 extends LinearOpMode {
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower, intakeSecond,true,0.5),
+                        follow(drivetrain.follower, intakeSecond,true,0.4),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
                         intake.intakeCommandAuton(launcher),
                         waitMs(300),
                         intake.disableIntakeCommandAuton(),
-                        follow(drivetrain.follower, openGate, true, 0.9),
-                        waitMs(250),
+                        follow(drivetrain.follower, openGate, true, 1),
+                        waitMs(750),
                         parallel(
                                 follow(drivetrain.follower, shootSecond,true, 0.95),
                                 launcher.runFlywheelMid(),

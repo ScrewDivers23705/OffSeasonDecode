@@ -180,46 +180,6 @@ public class Launcher{
         return sequential(
             instant(() -> isBusy = true), //set launcher busy
             instant(this::updateCurrent),
-            instant(() -> {intake.reverseMotor();}),
-            waitMs(75),
-            instant(() -> intake.disable()),
-            parallel(
-                instant(() -> {
-                    targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
-                    active = true; // set motor as active
-                }),
-                instant(() -> {
-                    hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
-                }),
-                instant(() -> {
-                   intake.openGate();
-                })
-            ),
-            waitUntil(this::isReady), // wait until flywheel is in correct speed
-
-            instant(this::runFeeders), // start feeding artifacts for flywheel
-
-            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
-
-            instant(() -> {
-                this.stopFeeders();  // stop feeders to not make 2 artifacts pass
-                //active = false; // turns off the shooters
-                isBusy = false; // set as not busy and free to use
-                //targetRPM = 0;
-            })
-        )
-        .requiring(this)
-        .requiring(intake);
-
-    }
-    public Command shootAutonCommand(double distance, double feedTime)
-    {
-        return sequential(
-                instant(() -> isBusy = true), //set launcher busy
-                instant(this::updateCurrent),
-                instant(() -> {intake.reverseMotor();}),
-                waitMs(75),
-                instant(() -> intake.disable()),
                 parallel(
                         instant(() -> {
                             targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
@@ -232,6 +192,48 @@ public class Launcher{
                             intake.openGate();
                         })
                 ),
+            instant(() -> {intake.reverseMotor();}),
+            waitMs(75),
+            instant(() -> intake.disable()),
+
+            waitUntil(this::isReady), // wait until flywheel is in correct speed
+
+            instant(this::runFeeders), // start feeding artifacts for flywheel
+
+            waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
+
+            instant(() -> {
+                this.stopFeeders();  // stop feeders to not make 2 artifacts pass
+                //active = false; // turns off the shooters
+                isBusy = false; // set as not busy and free to use
+                targetRPM = 2000;
+            })
+        )
+        .requiring(this)
+        .requiring(intake);
+
+    }
+    public Command shootAutonCommand(double distance, double feedTime)
+    {
+        return sequential(
+                instant(() -> isBusy = true), //set launcher busy
+                instant(this::updateCurrent),
+                parallel(
+                        instant(() -> {
+                            targetRPM = lookUpTable.get(distance)[1]; // get rpm from the lookuptable
+                            active = true; // set motor as active
+                        }),
+                        instant(() -> {
+                            hood.setPosition(lookUpTable.get(distance)[0]); // set hood position as value from lookuptable
+                        }),
+                        instant(() -> {
+                            intake.openGate();
+                        })
+                ),
+                instant(() -> {intake.reverseMotor();}),
+                waitMs(95),
+                instant(() -> intake.disable()),
+
                 waitUntil(this::isReady), // wait until flywheel is in correct speed
                 instant(this::runFeeders), // start feeding artifacts for flywheel
 

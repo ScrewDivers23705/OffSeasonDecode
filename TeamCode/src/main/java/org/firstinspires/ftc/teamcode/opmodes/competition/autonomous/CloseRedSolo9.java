@@ -77,6 +77,8 @@ public class CloseRedSolo9 extends LinearOpMode {
         intakeClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(drivetrain.follower.getPose(), intakeFirstControl1, intakeFirstControl1 ,intakeFirstControl1, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
+                .setTValueConstraint(0.95)
+                .setTimeoutConstraint(300)
                 .build();
         shootClose = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -111,18 +113,18 @@ public class CloseRedSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(89.5),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower,intakeClose,true,0.5),
-                        waitMs(350),
+                        follow(drivetrain.follower,intakeClose,true,0.4),
+                        waitMs(650),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
                         intake.intakeCommandAuton(launcher),
                         waitMs(300),
-                        intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootClose),
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                                 ),
+                        intake.disableIntakeCommandAuton(),
                         launcher.buildShootCommand(115),
                         waitMs(25),
                         launcher.buildShootCommand(115),
@@ -130,8 +132,8 @@ public class CloseRedSolo9 extends LinearOpMode {
                         launcher.buildShootCommand(115),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower,intakeSecond,true,0.5),
-                        waitMs(350),
+                        follow(drivetrain.follower,intakeSecond,true,0.4),
+                        waitMs(650),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(50),
                         intake.intakeCommandAuton(launcher),

@@ -15,10 +15,10 @@ public class RobotPoses {
                 public static Pose startPose = RobotConstants.DrivetrainConstants.RED_START_CLOSE_POSE;
                 public static Pose shootPreloadPose = new Pose(101,100,Math.toRadians(42));
                 public static Pose intakeFirstControl1 = new Pose(45, 80);
-                public static Pose intakeFirstPose = new Pose(128, 81,Math.toRadians(0));
+                public static Pose intakeFirstPose = new Pose(127, 80,Math.toRadians(2));
                 public static Pose shootFirstPose = new Pose(95.000, 90.000, Math.toRadians(45.5));
                 public static Pose intakeSecondControl1 = new Pose(81.407, 49.968);
-                public static Pose intakeSecondPose = new Pose(133.5, 53.75, Math.toRadians(-3));
+                public static Pose intakeSecondPose = new Pose(131.5, 53.75, Math.toRadians(-3));
                 public static Pose shootSecondControl1 = new Pose(101.648, 56.636);
                 public static Pose shootSecondPose = new Pose(84.5, 102, Math.toRadians(32));
             }
@@ -27,12 +27,12 @@ public class RobotPoses {
                 public static Pose shootPreloadPose = new Pose(101,100,Math.toRadians(42));
                 public static Pose intakeSecondControl1 = new Pose(92.9, 46.5);
                 public static Pose intakeSecondControl2 = new Pose(102,58.5);
-                public static Pose intakeSecondPose = new Pose(131, 55, Math.toRadians(-2));
-                public static Pose gateControl1 = new Pose(110,62);
-                public static Pose gatePose = new Pose(128,56,Math.toRadians(-13));
+                public static Pose intakeSecondPose = new Pose(134, 55, Math.toRadians(-2));
+                public static Pose gateControl1 = new Pose(109,63);
+                public static Pose gatePose = new Pose(127,57 ,Math.toRadians(-10));
                 public static Pose shootSecondControl1 = new Pose(97.6, 61);
                 public static Pose shootSecondPose = new Pose(90, 82, Math.toRadians(50));
-                public static Pose intakeFirstPose = new Pose(126, 81,Math.toRadians(-1));
+                public static Pose intakeFirstPose = new Pose(124, 81,Math.toRadians(-1));
                 public static Pose shootFirstPose = new Pose(84.5,102,32);
             }
         }
@@ -40,7 +40,7 @@ public class RobotPoses {
             public static class Solo{
                 public static Pose startPose = RobotConstants.DrivetrainConstants.RED_START_FAR_POSE;
                 public static Pose shootPose = new Pose(84,18,Math.toRadians(65));
-                public static Pose intakeFirstPose = new Pose(133.5, 34.8, Math.toRadians(0));
+                public static Pose intakeFirstPose = new Pose(133, 34.8, Math.toRadians(0));
                 public static Pose intakeFirstControl1 = new Pose(82.5,37.5);
                 public static Pose intakeSecondPose = new Pose(131.4, 14.5, Math.toRadians(-20));
                 public static Pose intakeSecondControl1 = new Pose(124.7, 27.4);

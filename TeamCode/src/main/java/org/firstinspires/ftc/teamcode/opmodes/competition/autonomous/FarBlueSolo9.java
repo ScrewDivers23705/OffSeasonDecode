@@ -79,7 +79,7 @@ public class FarBlueSolo9 extends LinearOpMode {
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootPose))
-                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootPose.getHeading() + Math.toRadians(1))
+                .setLinearHeadingInterpolation(intakeFirstPose.getHeading(),shootPose.getHeading() - Math.toRadians(1))
                 .setTValueConstraint(500)
                 .build();
         intakeSecond = drivetrain.follower.pathBuilder()
@@ -131,10 +131,9 @@ public class FarBlueSolo9 extends LinearOpMode {
                         waitMs(30),
                         launcher.shootAutonCommand(275, 433),
                         instant(launcher::disable),
-                        intake.intakeCommandAuton(launcher),
+                        /*intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeSecond,true,0.5),
                         waitMs(750),
-                        //follow(drivetrain.follower, shakeSecond, true, 0.7),
                         intake.disableIntakeCommandAuton(),
                         parallel(
                                 follow(drivetrain.follower, shootSecond, true, 0.9),
@@ -146,7 +145,7 @@ public class FarBlueSolo9 extends LinearOpMode {
                         launcher.shootAutonCommand(275, 433),
                         waitMs(30),
                         launcher.shootAutonCommand(275, 433),
-                        instant(launcher::disable),
+                        instant(launcher::disable), */
                         follow(drivetrain.follower,leave)
                 )
         );
