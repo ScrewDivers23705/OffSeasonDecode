@@ -114,9 +114,12 @@ public class FarRedSolo9 extends LinearOpMode {
                         launcher.shootAutonCommand(270, 433),
                         waitMs(30),
                         launcher.shootAutonCommand(270, 433),
+                        waitMs(30),
+                        launcher.shootAutonCommand(270, 433),
+
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
-                        follow(drivetrain.follower,intakeClose,true,0.6),
+                        follow(drivetrain.follower,intakeClose,true,0.3),
                         waitMs(350),
                         intake.reverseIntakeCommandAuton(),
                         waitMs(75),
@@ -132,6 +135,9 @@ public class FarRedSolo9 extends LinearOpMode {
                         launcher.shootAutonCommand(275, 433),
                         waitMs(30),
                         launcher.shootAutonCommand(275, 433),
+                        waitMs(30),
+                        launcher.shootAutonCommand(275, 433),
+
                         instant(launcher::disable),
                         /*intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower,intakeSecond,true,0.5),

@@ -29,6 +29,7 @@ public class RobotConstants {
         {
             org.firstinspires.ftc.teamcode.configs.utils.LookUpTable lookUpTable = new LookUpTable(2); // create a lookUpTable
 
+            lookUpTable.add(0, 0, 2300); //13V
             lookUpTable.add(76, 0.033,2500);//dist (CM),angle , RPM
             lookUpTable.add(89.5, 0.0435, 2600); // 13V // TODO keep working on LUT
             lookUpTable.add(102, 0.0535,2675); // 12.5V
