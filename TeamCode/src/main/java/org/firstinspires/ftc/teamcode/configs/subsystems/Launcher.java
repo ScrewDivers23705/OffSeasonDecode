@@ -197,7 +197,7 @@ public class Launcher{
             instant(() -> intake.disable()),
 
             waitUntil(this::isReady), // wait until flywheel is in correct speed
-
+            waitMs(40),
             instant(this::runFeeders), // start feeding artifacts for flywheel
 
             waitMs(ShooterConstants.FEED_TIME_MILLISECONDS), // wait until artifact completly passed through
