@@ -55,7 +55,7 @@ public class RobotConstants {
     public static class VisionConstants { // constants for vison
         public static final double kP = 0.0175     ; // drivetrain kp for rotation
         public static final double RED_GOAL_OFFSET = -6; // offset for
-        public static final double BLUE_GOAL_OFFSET = -7;
+        public static final double BLUE_GOAL_OFFSET = -10;
         public static final int RED_ID = 24;
         public static final int BLUE_ID = 20;
         public static final double OFFSET_TOLERANCE = 1.5;

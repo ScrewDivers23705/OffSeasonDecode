@@ -29,10 +29,10 @@ public class RobotPoses {
                 public static Pose intakeSecondControl2 = new Pose(102,58.5);
                 public static Pose intakeSecondPose = new Pose(134, 55, Math.toRadians(-2));
                 public static Pose gateControl1 = new Pose(109,63);
-                public static Pose gatePose = new Pose(127,57 ,Math.toRadians(-10));
+                public static Pose gatePose = new Pose(127.5,57 ,Math.toRadians(-15));
                 public static Pose shootSecondControl1 = new Pose(97.6, 61);
                 public static Pose shootSecondPose = new Pose(90, 82, Math.toRadians(50));
-                public static Pose intakeFirstPose = new Pose(125.5, 79.5,Math.toRadians(0));
+                public static Pose intakeFirstPose = new Pose(125.5, 77,Math.toRadians(0));
                 public static Pose shootFirstPose = new Pose(84.5,102,Math.toRadians(32));
             }
         }

@@ -133,7 +133,8 @@ public class MainTeleop extends OpMode {
             launcher.periodic();
             vision.periodic();
             //comms.periodic();
-
+            telemetry.addData("offset", vision.getOffset());
+            telemetry.update();
             Scheduler.execute(); //run everything scheduled
         }
     }

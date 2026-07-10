@@ -81,8 +81,8 @@ public class CloseRedAlliance9 extends LinearOpMode {
         openGate = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(intakeSecondPose, gateControl1, gatePose))
                 .setConstantHeadingInterpolation(gatePose.getHeading())
-                .setTValueConstraint(0.87)
-                .setTimeoutConstraint(1000)
+                .setTValueConstraint(0.83)
+                .setTimeoutConstraint(1200)
                 .build();
         shootSecond = drivetrain.follower.pathBuilder()
                 .addPath(new BezierCurve(drivetrain.follower.getPose(), shootSecondControl1, shootSecondPose))
@@ -92,8 +92,8 @@ public class CloseRedAlliance9 extends LinearOpMode {
         intakeFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(shootSecondPose, intakeFirstPose))
                 .setConstantHeadingInterpolation(intakeFirstPose.getHeading())
-                .setTValueConstraint(0.7)
-                .setTimeoutConstraint(800)
+                .setTValueConstraint(0.65)
+                .setTimeoutConstraint(1000)
                 .build();
         shootFirst = drivetrain.follower.pathBuilder()
                 .addPath(new BezierLine(intakeFirstPose, shootFirstPose))
@@ -133,13 +133,13 @@ public class CloseRedAlliance9 extends LinearOpMode {
                                 launcher.runFlywheelMid(),
                                 launcher.openGate()
                         ),
-                        launcher.buildShootCommand(152),
+                        launcher.buildShootCommand(145),
                         waitMs(35),
-                        launcher.buildShootCommand(152),
+                        launcher.buildShootCommand(145),
                         waitMs(35),
-                        launcher.buildShootCommand(152),
+                        launcher.buildShootCommand(145),
                         waitMs(35),
-                        launcher.buildShootCommand(152),
+                        launcher.buildShootCommand(145 ),
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
                         follow(drivetrain.follower, intakeFirst,true,0.35),

@@ -97,12 +97,15 @@ public class FarRedSolo9 extends LinearOpMode {
                                 launcher.runFlywheelFar()
                         ),
                         launcher.shootAutonCommand(270, 533),
-                        waitMs(30),
+                        waitMs(35),
                         launcher.shootAutonCommand(270, 433),
-                        waitMs(30),
+                        waitMs(35),
                         launcher.shootAutonCommand(270, 433),
-                        waitMs(30),
+                        waitMs(35),
                         launcher.shootAutonCommand(270, 433),
+                        waitMs(35),
+                        launcher.shootAutonCommand(270, 433),
+
 
                         instant(launcher::disable),
                         intake.intakeCommandAuton(launcher),
@@ -118,11 +121,13 @@ public class FarRedSolo9 extends LinearOpMode {
                                 launcher.openGate()
                         ),
                         launcher.shootAutonCommand(275, 533),
-                        waitMs(30),
+                        waitMs(35),
                         launcher.shootAutonCommand(275, 433),
-                        waitMs(30),
+                        waitMs(35),
                         launcher.shootAutonCommand(275, 433),
-                        waitMs(30),
+                        waitMs(35),
+                        launcher.shootAutonCommand(275, 433),
+                        waitMs(35),
                         launcher.shootAutonCommand(275, 433),
 
                         instant(launcher::disable),
